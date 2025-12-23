@@ -1,0 +1,38 @@
+{
+    "platform": "Twitter",
+    "campaigns": {
+        "dd20f505-ca4c-4d63-ba2e-386ba5da93fe": {
+            "name": "First Campaign",
+            "metrics": {
+                "impressions": 16824,
+                "clicks": 783,
+                "cost": 504.3,
+                "conversions": 87,
+                "ctr": 2.2,
+                "cpc": 1.27,
+                "roi": 1.8,
+                "sentiment_score": 0.53,
+                "forecast_data": {
+                    "projected_roi": 2.6,
+                    "projected_conversions": 203,
+                    "confidence_score": "75%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 5000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        }
+    }
+}

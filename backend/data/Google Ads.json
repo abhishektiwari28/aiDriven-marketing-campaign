@@ -1,0 +1,71 @@
+{
+    "platform": "Google Ads",
+    "campaigns": {
+        "a6588e7a-7dca-48cc-bc6f-9bd4382d7842": {
+            "name": "Summer Holiday",
+            "metrics": {
+                "impressions": 9436,
+                "clicks": 932,
+                "cost": 720.99,
+                "conversions": 134,
+                "ctr": 2.55,
+                "cpc": 1.1,
+                "roi": 1.61,
+                "sentiment_score": 0.5,
+                "forecast_data": {
+                    "projected_roi": 3.7,
+                    "projected_conversions": 281,
+                    "confidence_score": "91%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 1000.0,
+                "target_audience": 200,
+                "audience_insight": {
+                    "primary_segment": "Gamers",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "c999f5ac-e812-45f5-b801-bf6de417f281": {
+            "name": "Winter Offers",
+            "metrics": {
+                "impressions": 14884,
+                "clicks": 220,
+                "cost": 938.48,
+                "conversions": 109,
+                "ctr": 0.9,
+                "cpc": 2.41,
+                "roi": 3.84,
+                "sentiment_score": 0.65,
+                "forecast_data": {
+                    "projected_roi": 1.8,
+                    "projected_conversions": 338,
+                    "confidence_score": "81%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 1000.0,
+                "target_audience": 100,
+                "audience_insight": {
+                    "primary_segment": "Professionals",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        }
+    }
+}
