@@ -197,11 +197,18 @@ class DashboardService:
             channels = []
             colors = ["bg-indigo-500", "bg-blue-500", "bg-teal-500", "bg-emerald-500", "bg-amber-500"]
             for i, (name, data) in enumerate(all_channels_map.items()):
+                # Calculate average CPC and CTR for this platform
+                platform_aggregate = PlatformAPI.get_platform_aggregate_stats(name)
+                avg_ctr = platform_aggregate["metrics"].get("ctr", 0)
+                avg_cpc = platform_aggregate["metrics"].get("cpc", 0)
+                
                 channels.append({
                     "name": name,
                     "roi": round(data["roi_sum"] / data["count"], 2) if data["count"] > 0 else 0,
                     "spend": data["spend"],
                     "conversions": data["conversions"],
+                    "ctr": avg_ctr,
+                    "cpc": avg_cpc,
                     "color": colors[i % len(colors)]
                 })
 
