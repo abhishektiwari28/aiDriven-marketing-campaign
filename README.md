@@ -48,3 +48,6 @@ An AI-driven co-pilot for digital marketing that moves beyond static dashboards 
    uvicorn main:app --reload
    ```
 4. API docs available at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+
+# Himani has done changes
