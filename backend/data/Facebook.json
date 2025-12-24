@@ -66,6 +66,39 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "2c280c7a-b053-45fc-92ce-dd36c9298372": {
+            "name": "Community Building",
+            "metrics": {
+                "impressions": 10053,
+                "clicks": 317,
+                "cost": 727.54,
+                "conversions": 37,
+                "ctr": 2.69,
+                "cpc": 1.08,
+                "roi": 3.14,
+                "sentiment_score": 0.83,
+                "forecast_data": {
+                    "projected_roi": 2.9,
+                    "projected_conversions": 288,
+                    "confidence_score": "68%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 75000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Gamers",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }

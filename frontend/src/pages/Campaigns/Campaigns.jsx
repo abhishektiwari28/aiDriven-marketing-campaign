@@ -2,8 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Play, Pause, MoreVertical, TrendingUp, Plus, X, Share2, Loader2, CheckCircle, Clock, ShieldCheck, PenTool } from 'lucide-react';
 import axios from 'axios';
 import CreateCampaignModal from '../../components/CreateCampaignModal';
+import { useFilter } from '../../context/FilterContext';
 
 const API_BASE_URL = '/api';
+
+// Helper function to filter campaigns by time range
+const filterCampaignsByTimeRange = (campaigns, timeRange) => {
+    const now = new Date();
+    const timeRangeHours = parseInt(timeRange) * 24; // Convert days to hours
+    if (timeRange === '1') { // 24 hours
+        const cutoffTime = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        return campaigns.filter(campaign => {
+            const createdAt = new Date(campaign.createdAt || campaign.timeline?.start_date || now);
+            return createdAt >= cutoffTime;
+        });
+    } else {
+        const cutoffTime = new Date(now.getTime() - timeRangeHours * 60 * 60 * 1000);
+        return campaigns.filter(campaign => {
+            const createdAt = new Date(campaign.createdAt || campaign.timeline?.start_date || now);
+            return createdAt >= cutoffTime;
+        });
+    }
+};
 
 const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
     return (
@@ -68,15 +88,17 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
 const Campaigns = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStatus, setFilterStatus] = useState('All');
-    const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCampaign, setSelectedCampaign] = useState(null);
     const [initialModalData, setInitialModalData] = useState(null);
+    
+    const { addCampaign, updateCampaign, removeCampaign, timeRange } = useFilter();
+    const [campaigns, setCampaigns] = useState([]);
 
     useEffect(() => {
         fetchCampaigns();
-    }, []);
+    }, [timeRange]); // Re-fetch when time range changes
 
     const fetchCampaigns = async () => {
         setLoading(true);
@@ -102,11 +124,13 @@ const Campaigns = () => {
 
     const handleModalSuccess = (data) => {
         if (initialModalData) {
-            // Edit Logic - data is the updated campaign
+            // Edit Logic - update both local and context state
             setCampaigns(prev => prev.map(c => c.id === data.id ? data : c));
+            updateCampaign(data);
         } else {
-            // Create Logic - data is the new campaign
-            setCampaigns([data, ...campaigns]);
+            // Create Logic - add to both local and context state
+            setCampaigns(prev => [data, ...prev]);
+            addCampaign(data);
         }
     };
 
@@ -116,6 +140,7 @@ const Campaigns = () => {
                 if (window.confirm("Are you sure you want to delete this campaign?")) {
                     await axios.delete(`${API_BASE_URL}/campaigns/${id}`);
                     setCampaigns(prev => prev.filter(c => c.id !== id));
+                    removeCampaign(id); // Update context
                 }
                 return;
             }
@@ -123,26 +148,35 @@ const Campaigns = () => {
             const newStatus = action === 'Resume' ? 'Active' : 'Paused';
             const response = await axios.post(`${API_BASE_URL}/campaigns/${id}/status`, { action: action, status: newStatus });
 
-            // Re-fetch or update local state carefully
-            setCampaigns(current => current.map(c => {
-                if (c.id === id) {
-                    return { ...c, status: response.data.status };
-                }
-                return c;
-            }));
+            // Update both local and context state
+            const updatedCampaign = { ...campaigns.find(c => c.id === id), status: response.data.status };
+            setCampaigns(current => current.map(c => c.id === id ? updatedCampaign : c));
+            updateCampaign(updatedCampaign);
 
         } catch (error) {
             console.error(`Error performing ${action} on campaign ${id}:`, error);
+            alert(`Error ${action.toLowerCase()}ing campaign. Please try again.`);
         }
     };
 
-    const filteredCampaigns = campaigns.filter(c => {
-        const name = c.name || '';
-        const status = c.status || '';
-        const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesStatus = filterStatus === 'All' || status === filterStatus;
-        return matchesSearch && matchesStatus;
-    });
+    const filteredCampaigns = campaigns
+        .filter(c => {
+            const name = c.name || '';
+            const status = c.status || '';
+            const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
+            const matchesStatus = filterStatus === 'All' || status === filterStatus;
+            return matchesSearch && matchesStatus;
+        })
+        .filter(c => {
+            // Apply time range filter
+            return filterCampaignsByTimeRange([c], timeRange).length > 0;
+        })
+        .sort((a, b) => {
+            // Sort by creation date in descending order (newest first)
+            const dateA = new Date(a.createdAt || a.timeline?.start_date || 0);
+            const dateB = new Date(b.createdAt || b.timeline?.start_date || 0);
+            return dateB - dateA;
+        });
 
     return (
         <div className="space-y-10 animate-in fade-in duration-700">

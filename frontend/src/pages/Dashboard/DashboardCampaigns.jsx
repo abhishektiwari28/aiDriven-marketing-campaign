@@ -1,8 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, MoreVertical, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
+import { Play, Pause, MoreVertical, TrendingUp, DollarSign, Loader2, Calendar } from 'lucide-react';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
+
+// Sample campaign activity structure
+// {
+//   id: 1,
+//   name: "Winter Sale Campaign",
+//   status: "Active",
+//   budget: 50000,
+//   roi: 2.5,
+//   progress: 75,
+//   createdAt: "2024-01-15T10:30:00Z", // ISO timestamp
+//   activityDate: "2024-01-15T10:30:00Z" // Alternative timestamp field
+// }
+
+// Time filtering function - filters activities based on selected time range
+const filterActivitiesByTimeRange = (activities, selectedTimeRange) => {
+    if (!activities || activities.length === 0) return [];
+    if (!selectedTimeRange) return activities;
+    
+    const now = new Date();
+    const days = parseInt(selectedTimeRange);
+    const cutoffDate = new Date(now.getTime() - (days * 24 * 60 * 60 * 1000));
+    
+    console.log('Filtering:', activities.length, 'activities with timeRange:', days, 'days');
+    console.log('Cutoff date:', cutoffDate);
+    
+    const filtered = activities.filter(activity => {
+        const activityDate = new Date(activity.createdAt || activity.created_at || now);
+        const include = activityDate >= cutoffDate;
+        console.log(`${activity.name}: ${activityDate} >= ${cutoffDate} = ${include}`);
+        return include;
+    });
+    
+    console.log('Filtered result:', filtered.length, 'activities');
+    return filtered;
+};
 
 const CampaignRow = ({ name, status, budget, roi, progress }) => (
     <div className="flex items-center justify-between p-5 rounded-2xl bg-white border border-slate-200 hover:border-indigo-400 group transition-all duration-300 shadow-sm hover:shadow-md">
@@ -35,24 +70,74 @@ const CampaignRow = ({ name, status, budget, roi, progress }) => (
     </div>
 );
 
-const DashboardCampaigns = ({ selectedCampaign }) => {
-    const [campaigns, setCampaigns] = useState([]);
+const DashboardCampaigns = ({ selectedCampaign, timeRange }) => {
+    const [allActivities, setAllActivities] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedTimeRange, setSelectedTimeRange] = useState(timeRange || '1');
 
+    // Update local time range when prop changes
     useEffect(() => {
-        fetchData();
+        if (timeRange) {
+            setSelectedTimeRange(timeRange);
+        }
+    }, [timeRange]);
+
+    // Fetch campaign activities from API
+    useEffect(() => {
+        fetchActivities();
     }, [selectedCampaign]);
 
-    const fetchData = async () => {
+    const fetchActivities = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`${API_BASE_URL}/dashboard/stats`, { params: { campaign_id: selectedCampaign } });
-            setCampaigns(response.data.campaign_summary || []);
+            const response = await axios.get(`${API_BASE_URL}/dashboard/stats`, { 
+                params: { campaign_id: selectedCampaign } 
+            });
+            setAllActivities(response.data.campaign_summary || []);
         } catch (error) {
-            console.error("Error fetching dashboard campaigns:", error);
-        } finally {
-            setLoading(false);
+            console.error("Error fetching campaign activities:", error);
         }
+        
+        // Always add mock data for testing (remove this in production)
+        const mockActivities = [
+            {
+                id: 1,
+                name: "Winter Sale Campaign",
+                status: "Active",
+                budget: 50000,
+                roi: 2.5,
+                progress: 75,
+                createdAt: new Date().toISOString() // Today
+            },
+            {
+                id: 2,
+                name: "Summer Launch",
+                status: "Paused",
+                budget: 30000,
+                roi: 1.8,
+                progress: 45,
+                createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() // 2 days ago
+            },
+            {
+                id: 3,
+                name: "Old Campaign",
+                status: "Completed",
+                budget: 20000,
+                roi: 3.2,
+                progress: 100,
+                createdAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() // 10 days ago
+            }
+        ];
+        setAllActivities(mockActivities);
+        setLoading(false);
+    };
+
+    // Filter activities based on selected time range
+    const filteredActivities = filterActivitiesByTimeRange(allActivities, selectedTimeRange);
+
+    // Handle time range selection
+    const handleTimeRangeChange = (range) => {
+        setSelectedTimeRange(range);
     };
 
     if (loading) {
@@ -71,21 +156,45 @@ const DashboardCampaigns = ({ selectedCampaign }) => {
                     <h3 className="text-xl font-black text-slate-900 tracking-tight uppercase">Strategic Activity Grid</h3>
                     <p className="text-xs text-slate-500 font-medium mt-1">Real-time telemetry from active deployments</p>
                 </div>
-                <button className="text-indigo-600 text-[10px] font-black uppercase tracking-widest hover:underline transition-all">Command Library</button>
+                
+                {/* Time Range Filter */}
+                <div className="flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                    <select
+                        value={selectedTimeRange}
+                        onChange={(e) => handleTimeRangeChange(e.target.value)}
+                        className="text-[10px] font-black uppercase tracking-widest bg-white border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:border-indigo-500 transition-all"
+                    >
+                        <option value="1">Last 24 Hours</option>
+                        <option value="3">Last 3 Days</option>
+                        <option value="7">Last 7 Days</option>
+                        <option value="15">Last 15 Days</option>
+                        <option value="30">Last 30 Days</option>
+                    </select>
+                </div>
             </div>
+            
             <div className="space-y-4">
-                {campaigns.map((c, i) => (
-                    <CampaignRow key={i} {...c} />
+                {filteredActivities.map((activity, i) => (
+                    <CampaignRow key={activity.id || i} {...activity} />
                 ))}
-                {campaigns.length === 0 && (
+                
+                {/* Empty state when no activities match time filter */}
+                {filteredActivities.length === 0 && !loading && (
                     <div className="py-10 text-center border-2 border-dashed border-slate-100 rounded-3xl">
-                        <p className="text-slate-400 font-medium italic text-sm">No active sequences found.</p>
+                        <Calendar className="w-8 h-8 text-slate-300 mx-auto mb-3" />
+                        <p className="text-slate-400 font-medium italic text-sm">
+                            {allActivities.length === 0 
+                                ? "No campaign activities found." 
+                                : `No campaign activity found for the last ${selectedTimeRange === '1' ? '24 hours' : `${selectedTimeRange} days`}.`
+                            }
+                        </p>
+                        <p className="text-slate-300 text-xs mt-2">
+                            Try selecting a different time range or create new campaigns.
+                        </p>
                     </div>
                 )}
             </div>
-            <button className="w-full mt-10 py-4 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 font-bold hover:border-indigo-400/50 hover:text-indigo-600 hover:bg-indigo-50/10 transition-all flex items-center justify-center gap-2 group">
-                <span className="text-sm font-black uppercase tracking-widest">+ Initialize New Campaign Node</span>
-            </button>
         </div>
     );
 };

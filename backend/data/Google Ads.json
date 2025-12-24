@@ -66,6 +66,39 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "24a92feb-be80-4cb1-a66a-f8bafb2c811a": {
+            "name": "New Product Launch",
+            "metrics": {
+                "impressions": 19295,
+                "clicks": 281,
+                "cost": 309.68,
+                "conversions": 86,
+                "ctr": 1.15,
+                "cpc": 2.2,
+                "roi": 2.81,
+                "sentiment_score": 0.55,
+                "forecast_data": {
+                    "projected_roi": 2.4,
+                    "projected_conversions": 121,
+                    "confidence_score": "87%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 60000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }

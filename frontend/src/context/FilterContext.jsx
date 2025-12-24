@@ -4,23 +4,38 @@ const FilterContext = createContext();
 
 export const FilterProvider = ({ children }) => {
     const [selectedCampaign, setSelectedCampaign] = useState('all');
-    const [timeRange, setTimeRange] = useState('30');
+    const [timeRange, setTimeRange] = useState('1'); // Default to 24 hours
     const [campaigns, setCampaigns] = useState([{ id: 'all', name: 'All Campaigns', goal: 'System Wide' }]);
 
     React.useEffect(() => {
-        const fetchCampaigns = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/campaigns');
-                if (response.ok) {
-                    const data = await response.json();
-                    setCampaigns([{ id: 'all', name: 'All Campaigns', goal: 'System Wide' }, ...data]);
-                }
-            } catch (error) {
-                console.error("Error fetching campaigns:", error);
-            }
-        };
         fetchCampaigns();
     }, []);
+
+    const fetchCampaigns = async () => {
+        try {
+            const response = await fetch('http://localhost:8000/api/campaigns');
+            if (response.ok) {
+                const data = await response.json();
+                setCampaigns([{ id: 'all', name: 'All Campaigns', goal: 'System Wide' }, ...data]);
+            }
+        } catch (error) {
+            console.error("Error fetching campaigns:", error);
+        }
+    };
+
+    const addCampaign = (newCampaign) => {
+        setCampaigns(prev => [prev[0], newCampaign, ...prev.slice(1)]);
+    };
+
+    const updateCampaign = (updatedCampaign) => {
+        setCampaigns(prev => prev.map(c => 
+            c.id === updatedCampaign.id ? updatedCampaign : c
+        ));
+    };
+
+    const removeCampaign = (campaignId) => {
+        setCampaigns(prev => prev.filter(c => c.id !== campaignId));
+    };
 
     return (
         <FilterContext.Provider value={{
@@ -29,11 +44,10 @@ export const FilterProvider = ({ children }) => {
             timeRange,
             setTimeRange,
             campaigns,
-            refreshCampaigns: async () => {
-                const response = await fetch('http://localhost:8000/api/campaigns');
-                const data = await response.json();
-                setCampaigns([{ id: 'all', name: 'All Campaigns', goal: 'System Wide' }, ...data]);
-            }
+            refreshCampaigns: fetchCampaigns,
+            addCampaign,
+            updateCampaign,
+            removeCampaign
         }}>
             {children}
         </FilterContext.Provider>

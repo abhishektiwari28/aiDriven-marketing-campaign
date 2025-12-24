@@ -15,7 +15,8 @@ const Dashboard = () => {
         setSelectedCampaign,
         timeRange,
         setTimeRange,
-        campaigns
+        campaigns,
+        addCampaign
     } = useFilter();
 
     const renderContent = () => {
@@ -67,6 +68,7 @@ const Dashboard = () => {
                             onChange={(e) => setTimeRange(e.target.value)}
                             className="appearance-none bg-white border border-slate-200 text-slate-900 text-sm font-bold rounded-xl pl-12 pr-10 py-3.5 focus:outline-none focus:border-indigo-500/50 shadow-sm hover:shadow-md transition-all cursor-pointer"
                         >
+                            <option value="1">Last 24 Hours</option>
                             <option value="3">Last 3 Days</option>
                             <option value="7">Last 7 Days</option>
                             <option value="15">Last 15 Days</option>
@@ -80,7 +82,7 @@ const Dashboard = () => {
                         className="btn-primary py-2.5"
                     >
                         <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">New Campaign</span>
+                        <span className="hidden sm:inline">Initialize New Campaign</span>
                     </button>
                 </div>
             </header>
@@ -89,11 +91,8 @@ const Dashboard = () => {
                 isOpen={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 onSuccess={(data) => {
-                    // Optionally refresh global context or just close
+                    addCampaign(data); // Add to context without page refresh
                     console.log("Campaign Created from Dashboard:", data);
-                    // Force refresh via window or context if needed, but for now just close
-                    // In a real app we'd update the context campaigns list.
-                    window.location.reload(); // Quick way to ensure context updates for now
                 }}
             />
 

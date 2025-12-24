@@ -99,6 +99,72 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "24a92feb-be80-4cb1-a66a-f8bafb2c811a": {
+            "name": "New Product Launch",
+            "metrics": {
+                "impressions": 11401,
+                "clicks": 1442,
+                "cost": 509.8,
+                "conversions": 28,
+                "ctr": 0.88,
+                "cpc": 1.96,
+                "roi": 3.62,
+                "sentiment_score": 0.6,
+                "forecast_data": {
+                    "projected_roi": 2.2,
+                    "projected_conversions": 482,
+                    "confidence_score": "83%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 60000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "2c280c7a-b053-45fc-92ce-dd36c9298372": {
+            "name": "Community Building",
+            "metrics": {
+                "impressions": 15928,
+                "clicks": 981,
+                "cost": 842.43,
+                "conversions": 69,
+                "ctr": 2.5,
+                "cpc": 1.12,
+                "roi": 2.98,
+                "sentiment_score": 0.62,
+                "forecast_data": {
+                    "projected_roi": 4.4,
+                    "projected_conversions": 159,
+                    "confidence_score": "74%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 75000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Tech Enthusiasts",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }
