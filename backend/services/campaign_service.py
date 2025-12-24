@@ -56,7 +56,65 @@ class CampaignService:
     def get_all_campaigns(self) -> List[Dict[str, Any]]:
         # Re-sync on read to ensure fresh state if files changed externally
         self.ensure_campaigns_synced()
-        return db.get_campaigns()
+        campaigns = db.get_campaigns()
+        
+        # Enrich campaigns with real platform data
+        enriched_campaigns = []
+        for campaign in campaigns:
+            enriched_campaign = self.enrich_campaign_with_platform_data(campaign)
+            enriched_campaigns.append(enriched_campaign)
+        
+        return enriched_campaigns
+
+    def enrich_campaign_with_platform_data(self, campaign: Dict[str, Any]) -> Dict[str, Any]:
+        """Enriches campaign with real data from platform files."""
+        campaign_id = campaign["id"]
+        platforms_data = PlatformAPI.get_all_platforms_data(campaign_id)
+        
+        if not platforms_data:
+            return campaign
+        
+        # Aggregate forecast data from all platforms
+        total_projected_conversions = 0
+        projected_roi_sum = 0
+        confidence_scores = []
+        platform_count = 0
+        
+        # Aggregate schedule data
+        duration_days = 0
+        
+        for platform_data in platforms_data:
+            metrics = platform_data.get("metrics", {})
+            forecast = metrics.get("forecast_data", {})
+            schedule = metrics.get("schedule_data", {})
+            
+            if forecast:
+                total_projected_conversions += forecast.get("projected_conversions", 0)
+                projected_roi_sum += forecast.get("projected_roi", 0)
+                confidence_scores.append(int(forecast.get("confidence_score", "0%").replace("%", "")))
+                platform_count += 1
+            
+            if schedule and schedule.get("duration_days"):
+                duration_days = max(duration_days, schedule.get("duration_days", 0))
+        
+        # Calculate aggregated forecast
+        if platform_count > 0:
+            avg_projected_roi = round(projected_roi_sum / platform_count, 1)
+            avg_confidence = round(sum(confidence_scores) / len(confidence_scores)) if confidence_scores else 0
+            
+            campaign["roi_forecast"] = {
+                "projected_roi": avg_projected_roi,
+                "projected_conversions": total_projected_conversions,
+                "confidence_score": f"{avg_confidence}%"
+            }
+        
+        # Update timeline with real duration
+        if duration_days > 0:
+            if "timeline" not in campaign:
+                campaign["timeline"] = {}
+            campaign["timeline"]["duration_days"] = duration_days
+        
+        return campaign
 
     def update_status(self, campaign_id: str, action: str) -> Dict[str, Any]:
         campaigns = db.get_campaigns()
@@ -64,15 +122,21 @@ class CampaignService:
         if not campaign:
             return {"error": "Campaign not found"}
         
-        # Ask agent for the new status based on action
-        decision = self.orchestrator.execute_action(campaign, action)
-        new_status = decision.get("new_status", campaign["status"])
+        # Direct status mapping for immediate response
+        status_map = {
+            'Launch': 'Active',
+            'Pause': 'Paused', 
+            'Resume': 'Active'
+        }
+        new_status = status_map.get(action, campaign["status"])
         
         # Update in database
         db.update_campaign_status(campaign_id, new_status)
-        db.log_ai_decision(campaign_id, "StatusUpdate", decision)
         
-        return decision
+        return {
+            "status": new_status,
+            "message": f"Campaign {action.lower()}ed successfully"
+        }
 
     def delete_campaign(self, campaign_id: str):
         # 1. Get campaign to know which platforms to clean up

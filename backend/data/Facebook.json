@@ -10,6 +10,8 @@
                 "conversions": 95,
                 "ctr": 3.28,
                 "cpc": 1.45,
+                "cpm": 52.67,
+                "conversion_rate": 21.89,
                 "roi": 2.16,
                 "sentiment_score": 0.45,
                 "forecast_data": {
@@ -43,6 +45,8 @@
                 "conversions": 52,
                 "ctr": 1.54,
                 "cpc": 1.68,
+                "cpm": 48.35,
+                "conversion_rate": 3.55,
                 "roi": 3.26,
                 "sentiment_score": 0.48,
                 "forecast_data": {

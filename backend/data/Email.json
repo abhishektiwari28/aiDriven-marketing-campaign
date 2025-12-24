@@ -10,6 +10,8 @@
                 "conversions": 46,
                 "ctr": 4.09,
                 "cpc": 0.53,
+                "cpm": 75.11,
+                "conversion_rate": 14.74,
                 "roi": 2.03,
                 "sentiment_score": 0.73,
                 "forecast_data": {
@@ -32,6 +34,42 @@
                 "detailed_stats": {
                     "Open Rate": "19%",
                     "Click Rate": "4%"
+                }
+            }
+        },
+        "eb553083-3b28-4e36-9da3-14e675ee0a20": {
+            "name": "New Offers",
+            "metrics": {
+                "impressions": 2311,
+                "clicks": 501,
+                "cost": 475.04,
+                "conversions": 37,
+                "ctr": 2.93,
+                "cpc": 1.97,
+                "cpm": 147.98,
+                "conversion_rate": 16.2,
+                "roi": 1.53,
+                "sentiment_score": 0.92,
+                "forecast_data": {
+                    "projected_roi": 2.1,
+                    "projected_conversions": 71,
+                    "confidence_score": "70%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 10000.0,
+                "target_audience": 100,
+                "audience_insight": {
+                    "primary_segment": "High-Value",
+                    "top_region": "North America",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Open Rate": "21%",
+                    "Click Rate": "5%"
                 }
             }
         }
