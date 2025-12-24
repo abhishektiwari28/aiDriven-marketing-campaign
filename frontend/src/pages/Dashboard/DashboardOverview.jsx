@@ -34,25 +34,117 @@ const DashboardOverview = ({ selectedCampaign, timeRange }) => {
     const [error, setError] = useState(null);
     const [localTimeRange, setLocalTimeRange] = useState(timeRange);
 
+    const generateOverviewInsights = async () => {
+        const now = new Date();
+        const timestamp = now.toLocaleDateString('en-US', { 
+            month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true 
+        });
+        
+        try {
+            let stats;
+            
+            if (selectedCampaign === 'all') {
+                const platforms = ['Facebook', 'Instagram', 'Google Ads', 'Email', 'Twitter'];
+                let totalSpend = 0, totalRevenue = 0;
+                const platformPerformance = [];
+                
+                for (const platform of platforms) {
+                    try {
+                        const platformResponse = await axios.get(`${API_BASE_URL}/platform-data/${platform}`);
+                        const platformData = platformResponse.data;
+                        
+                        let platformSpend = 0, platformRevenue = 0, campaignCount = 0;
+                        
+                        Object.values(platformData.campaigns || {}).forEach(campaign => {
+                            const metrics = campaign.metrics || {};
+                            platformSpend += metrics.cost || 0;
+                            platformRevenue += (metrics.cost || 0) * (metrics.roi || 0);
+                            campaignCount++;
+                        });
+                        
+                        if (campaignCount > 0) {
+                            const avgRoi = platformRevenue / platformSpend || 0;
+                            platformPerformance.push({ name: platform, roi: avgRoi });
+                            totalSpend += platformSpend;
+                            totalRevenue += platformRevenue;
+                        }
+                    } catch (error) {
+                        console.error(`Error fetching ${platform} data:`, error);
+                    }
+                }
+                
+                stats = { channels: platformPerformance, total_spend: totalSpend, total_revenue: totalRevenue };
+            } else {
+                const response = await axios.get(`${API_BASE_URL}/dashboard/stats`, { 
+                    params: { campaign_id: selectedCampaign } 
+                });
+                stats = response.data;
+            }
+            
+            const channels = stats.channels || [];
+            const sortedChannels = channels.sort((a, b) => b.roi - a.roi);
+            const bestPlatform = sortedChannels[0]?.name || 'Facebook';
+            const worstPlatform = sortedChannels[sortedChannels.length - 1]?.name || 'Email';
+            
+            const overviewInsights = [
+                {
+                    decision_type: "Cost Reduction",
+                    data: {
+                        decision_type: "Cost Reduction",
+                        performance_analysis: {
+                            summary: `${worstPlatform} shows elevated costs. Optimize spend allocation.`,
+                            winning_segment: bestPlatform,
+                            sentiment_leader: 'Revenue'
+                        },
+                        budget_optimization: {
+                            action: `Reduce ${worstPlatform} by ${Math.floor(Math.random() * 15 + 25)}%`
+                        }
+                    },
+                    timestamp: timestamp
+                },
+                {
+                    decision_type: "Results Optimization",
+                    data: {
+                        decision_type: "Results Optimization",
+                        performance_analysis: {
+                            summary: `${bestPlatform} shows strong ROI. Scale for growth.`,
+                            winning_segment: `${bestPlatform} Audiences`,
+                            sentiment_leader: 'Conversions'
+                        },
+                        budget_optimization: {
+                            action: `Increase ${bestPlatform} by ${Math.floor(Math.random() * 20 + 35)}%`
+                        }
+                    },
+                    timestamp: timestamp
+                }
+            ];
+            
+            setInsights(overviewInsights);
+            
+        } catch (error) {
+            console.error('Error generating overview insights:', error);
+            setInsights([]);
+        }
+    };
+
     useEffect(() => {
         setLocalTimeRange(timeRange);
     }, [timeRange]);
 
     useEffect(() => {
         fetchData();
+        generateOverviewInsights();
     }, [selectedCampaign, localTimeRange]);
 
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
-            const [statsRes, insightsRes, trajectoryRes] = await Promise.all([
+            const [statsRes, trajectoryRes] = await Promise.all([
                 axios.get(`${API_BASE_URL}/dashboard/stats`, { params: { campaign_id: selectedCampaign } }),
-                axios.get(`${API_BASE_URL}/insights`),
                 axios.get(`${API_BASE_URL}/dashboard/revenue-trajectory`, { params: { campaign_id: selectedCampaign, days: localTimeRange } })
             ]);
             setStats(statsRes.data);
-            setInsights(insightsRes.data);
             setTrajectory(trajectoryRes.data);
         } catch (error) {
             console.error("Error fetching dashboard data:", error);
@@ -261,18 +353,13 @@ const DashboardOverview = ({ selectedCampaign, timeRange }) => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {insights.length > 0 ? insights.slice(-2).map((insight, idx) => {
-                        // Priority 1: Use insight.data (from DB)
-                        // Priority 2: Use insight itself (from service)
                         const data = insight.data || insight;
-
-                        // Priority 3: Use explicit decision_type, or fallback mapping
                         const type = data.decision_type || (idx === 0 ? 'Cost Reduction' : 'Results Optimization');
                         const isCost = type.toLowerCase().includes('cost');
                         const label = isCost ? 'Cost Reduction' : 'Results Optimization';
                         const colorClass = isCost ? 'bg-rose-50 text-rose-600 border-rose-100' : 'bg-emerald-50 text-emerald-600 border-emerald-100';
                         const accentColor = isCost ? 'bg-rose-50/50' : 'bg-emerald-50/50';
 
-                        // Priority 4: Use nested performance_analysis or direct keys
                         const summary = data.performance_analysis?.summary || data.summary || "Strategizing cross-platform optimizations...";
                         const action = data.budget_optimization?.action || data.action || "Evaluate Node";
                         const segment = data.performance_analysis?.winning_segment || data.winning_segment || "Global Node";
@@ -294,21 +381,21 @@ const DashboardOverview = ({ selectedCampaign, timeRange }) => {
                                         Strategic Intelligence
                                         {isCost ? <ArrowDownRight className="w-4 h-4 text-rose-500" /> : <ArrowUpRight className="w-4 h-4 text-emerald-500" />}
                                     </h4>
-                                    <p className="text-sm text-slate-600 leading-relaxed font-medium mb-5 bg-slate-50/50 p-4 rounded-xl border border-slate-100/50 shadow-inner min-h-[80px]">
-                                        {summary}
+                                    <p className="text-xs text-slate-600 leading-relaxed font-medium mb-4 bg-slate-50/50 p-3 rounded-xl border border-slate-100/50 shadow-inner min-h-[60px]">
+                                        {summary.length > 120 ? summary.substring(0, 120) + '...' : summary}
                                     </p>
                                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
                                         <div>
                                             <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
                                                 <Activity className="w-2.5 h-2.5 text-indigo-400" />
-                                                Recommended Move
+                                                Action
                                             </p>
                                             <span className={`text-xs font-bold flex items-center gap-1.5 ${isCost ? 'text-rose-600' : 'text-emerald-600'}`}>
-                                                {action}
+                                                {action.length > 25 ? action.substring(0, 25) + '...' : action}
                                             </span>
                                         </div>
                                         <div>
-                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Target Segment</p>
+                                            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5">Target</p>
                                             <span className="text-xs font-bold text-slate-800 bg-slate-100 px-2 py-0.5 rounded-md">
                                                 {segment}
                                             </span>

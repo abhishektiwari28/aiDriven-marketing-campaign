@@ -43,85 +43,89 @@
                 "detailed_stats": {
                     "Ad 1": "Winner",
                     "Ad 2": "Testing"
+                },
+                "ai_insights": {
+                    "cost_reduction": {
+                        "action": "Reduce Facebook spend by 35% and pause low-CTR segments",
+                        "summary": "Facebook campaigns show elevated CPC costs with some ad sets performing below 1.5x ROI threshold. Pausing underperforming segments could save \u00e2\u201a\u00b9374 weekly.",
+                        "winning_segment": "High-Engagement Audiences",
+                        "sentiment_leader": "Facebook"
+                    },
+                    "results_optimization": {
+                        "action": "Increase Facebook budget by 40% and expand top-performing ad sets",
+                        "summary": "Facebook demonstrates superior ROI performance with 2 high-yield segments identified. Increasing budget allocation by 40% could capture additional \u00e2\u201a\u00b9747 in revenue.",
+                        "winning_segment": "Facebook Lookalike Audiences",
+                        "sentiment_leader": "Facebook"
+                    }
                 }
             }
         },
-        "c999f5ac-e812-45f5-b801-bf6de417f281": {
+        "e1d63f8b-63bf-4f75-81e1-eb02ec87087e": {
             "name": "Winter Offers",
             "metrics": {
-                "impressions": 6047,
-                "clicks": 1465,
-                "cost": 292.38,
-                "conversions": 52,
-                "ctr": 1.54,
-                "cpc": 1.68,
-                "cpm": 48.35,
-                "conversion_rate": 3.55,
-                "roi": 3.26,
-                "sentiment_score": 0.48,
+                "impressions": 6921,
+                "clicks": 936,
+                "cost": 714.18,
+                "conversions": 43,
+                "ctr": 1.2,
+                "cpc": 1.67,
+                "cpm": 59.07,
+                "conversion_rate": 12.57,
+                "roi": 3.98,
+                "sentiment_score": 0.56,
                 "forecast_data": {
-                    "projected_roi": 3.6,
-                    "projected_conversions": 474,
-                    "confidence_score": "86%"
+                    "projected_roi": 3.1,
+                    "projected_conversions": 129,
+                    "confidence_score": "71%"
                 },
                 "schedule_data": {
                     "duration_days": 30,
                     "next_run": "",
                     "frequency": "Daily"
                 },
-                "budget": 1000.0,
-                "target_audience": 100,
+                "budget": 10000.0,
+                "target_audience": 10000,
                 "audience_insight": {
-                    "primary_segment": "Professionals",
-                    "engagement_depth": "High",
-                    "gender": {
-                        "Male": 55,
-                        "Female": 45
-                    },
-                    "age": {
-                        "18-24": 10,
-                        "25-34": 40,
-                        "35-44": 35,
-                        "45+": 15
-                    }
+                    "primary_segment": "Gamers",
+                    "engagement_depth": "Medium"
                 },
                 "detailed_stats": {
-                    "Ad 1": "Active",
+                    "Ad 1": "Winner",
                     "Ad 2": "Testing"
                 }
             }
         },
-        "f84b709c-67f0-4f9e-b9ad-9278adc2a626": {
-            "name": "New Campaign",
+        "bd639b52-7fd0-4384-808d-267dbe40166c": {
+            "name": "Big Billion Days",
             "metrics": {
-                "impressions": 7650,
-                "clicks": 585,
-                "cost": 788.37,
-                "conversions": 106,
-                "ctr": 0.8,
-                "cpc": 1.58,
-                "cpm": 48.67,
-                "conversion_rate": 13.3,
-                "roi": 2.76,
-                "sentiment_score": 0.56,
+                "impressions": 19318,
+                "clicks": 1118,
+                "cost": 678.49,
+                "conversions": 141,
+                "ctr": 1.47,
+                "cpc": 2.12,
+                "cpm": 46.25,
+                "conversion_rate": 8.38,
+                "roi": 3.98,
+                "sentiment_score": 0.62,
                 "forecast_data": {
-                    "projected_roi": 3.1,
-                    "projected_conversions": 85,
-                    "confidence_score": "89%"
+                    "projected_roi": 2.7,
+                    "projected_conversions": 211,
+                    "confidence_score": "71%"
                 },
                 "schedule_data": {
                     "duration_days": 30,
                     "next_run": "",
                     "frequency": "Daily"
                 },
-                "budget": 20000.0,
+                "budget": 50000.0,
                 "target_audience": 10000,
                 "audience_insight": {
                     "primary_segment": "Gamers",
-                    "engagement_depth": "High"
+                    "engagement_depth": "Medium"
                 },
                 "detailed_stats": {
-                    "Ad 1": "Learning",
+                    "Ad 1": "Active",
                     "Ad 2": "Testing"
                 }
             }

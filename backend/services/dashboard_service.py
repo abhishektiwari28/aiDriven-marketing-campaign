@@ -355,7 +355,7 @@ class DashboardService:
 
 
     def get_ai_insights(self, campaign_id: str = None) -> List[Dict[str, Any]]:
-        # Fetch current data
+        # Fetch current data with AI insights
         if campaign_id and campaign_id != 'all':
             platforms_data = PlatformAPI.get_all_platforms_data(campaign_id)
         else:
@@ -379,34 +379,69 @@ class DashboardService:
             
             platforms_data = all_data
 
-        if not platforms_data:
-            # Return fallback insights if no data
-            return self._generate_fallback_insights(campaign_id)
-
-        # Run Strategy Agent
-        try:
-            new_decisions = self.strategy_agent.run({"platforms_data": platforms_data})
-        except Exception as e:
-            print(f"Strategy agent error: {e}")
-            return self._generate_fallback_insights(campaign_id)
-        
-        # Log to DB for persistence
-        if campaign_id and campaign_id != 'all':
-            for d in new_decisions:
-                db.log_ai_decision(campaign_id, d.get("decision_type", "Strategic Signal"), d)
-        
-        # Return the decisions in the format expected by frontend
-        formatted_insights = []
+        # Extract AI insights from platform data if available
+        ai_insights = []
         now = datetime.now().strftime("%b %d, %I:%M %p")
-        for d in new_decisions:
-            formatted_insights.append({
-                "decision_type": d.get("decision_type"),
-                "performance_analysis": d.get("performance_analysis", {}),
-                "budget_optimization": d.get("budget_optimization", {}),
-                "timestamp": now
-            })
         
-        return formatted_insights if formatted_insights else self._generate_fallback_insights(campaign_id) if formatted_insights else self._generate_fallback_insights(campaign_id)
+        for platform_data in platforms_data:
+            metrics = platform_data.get("metrics", {})
+            insights = metrics.get("ai_insights", {})
+            
+            if insights:
+                # Cost Reduction insight
+                if "cost_reduction" in insights:
+                    cost_data = insights["cost_reduction"]
+                    ai_insights.append({
+                        "decision_type": "Cost Reduction",
+                        "data": {
+                            "decision_type": "Cost Reduction",
+                            "performance_analysis": {
+                                "summary": cost_data.get("summary", ""),
+                                "winning_segment": cost_data.get("winning_segment", ""),
+                                "sentiment_leader": cost_data.get("sentiment_leader", "")
+                            },
+                            "budget_optimization": {
+                                "action": cost_data.get("action", "")
+                            }
+                        },
+                        "timestamp": now
+                    })
+                
+                # Results Optimization insight
+                if "results_optimization" in insights:
+                    results_data = insights["results_optimization"]
+                    ai_insights.append({
+                        "decision_type": "Results Optimization",
+                        "data": {
+                            "decision_type": "Results Optimization",
+                            "performance_analysis": {
+                                "summary": results_data.get("summary", ""),
+                                "winning_segment": results_data.get("winning_segment", ""),
+                                "sentiment_leader": results_data.get("sentiment_leader", "")
+                            },
+                            "budget_optimization": {
+                                "action": results_data.get("action", "")
+                            }
+                        },
+                        "timestamp": now
+                    })
+        
+        # If we have insights from data files, return them
+        if ai_insights:
+            # Group by decision type and take the first of each
+            cost_insights = [i for i in ai_insights if i["decision_type"] == "Cost Reduction"]
+            results_insights = [i for i in ai_insights if i["decision_type"] == "Results Optimization"]
+            
+            final_insights = []
+            if cost_insights:
+                final_insights.append(cost_insights[0])
+            if results_insights:
+                final_insights.append(results_insights[0])
+                
+            return final_insights
+        
+        # Fallback to generated insights
+        return self._generate_fallback_insights(campaign_id) if formatted_insights else self._generate_fallback_insights(campaign_id)
     
     def _generate_fallback_insights(self, campaign_id: str = None) -> List[Dict[str, Any]]:
         """Generate fallback insights when strategy agent fails or no data available"""

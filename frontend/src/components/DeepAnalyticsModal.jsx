@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, TrendingUp, Users, Target, Brain, Download, Facebook, Instagram, Mail, Twitter } from 'lucide-react';
+import { X, BarChart3, Users2, Layers3, Brain, Download, Facebook, Instagram, Mail, Twitter, Target } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
@@ -185,98 +185,213 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
     const pdf = new jsPDF();
     let yPos = 30;
     
-    // Header
-    pdf.setFontSize(28);
-    pdf.setTextColor(37, 99, 235);
-    pdf.text('Deep Insights', 20, yPos);
-    yPos += 10;
-    pdf.setFontSize(16);
-    pdf.setTextColor(100, 100, 100);
-    pdf.text('COMPREHENSIVE ANALYTICS REPORT', 20, yPos);
-    yPos += 8;
+    // Header Section
+    pdf.setFillColor(37, 99, 235);
+    pdf.rect(0, 0, 210, 40, 'F');
+    pdf.setFontSize(24);
+    pdf.setTextColor(255, 255, 255);
+    pdf.text('DEEP ANALYTICS REPORT', 20, 25);
+    pdf.setFontSize(12);
+    pdf.text(`Campaign: ${selectedCampaign.name}`, 20, 35);
+    
+    yPos = 60;
+    pdf.setTextColor(0, 0, 0);
     pdf.setFontSize(10);
-    pdf.text(`Generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}`, 20, yPos);
-    yPos += 25;
+    pdf.text(`Generated: ${new Date().toLocaleDateString()} | ${new Date().toLocaleTimeString()}`, 20, yPos);
     
-    // Performance Section
-    pdf.setFontSize(20);
-    pdf.setTextColor(37, 99, 235);
-    pdf.text('PERFORMANCE OVERVIEW', 20, yPos);
-    yPos += 15;
+    // Section 1: Performance Overview
+    yPos += 20;
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(15, yPos - 5, 180, 15, 'F');
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('1. PERFORMANCE OVERVIEW', 20, yPos + 5);
     
+    yPos += 30;
     const performanceData = generateReportData('performance');
     pdf.setFontSize(12);
-    pdf.setTextColor(51, 51, 51);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Campaign Investment & Returns', 20, yPos);
     
-    // Performance metrics in structured format
-    pdf.text('Campaign Investment & Returns:', 20, yPos);
-    yPos += 8;
-    pdf.text(`  Total Campaign Spend: $${performanceData.metrics.totalSpend.toLocaleString()}`, 25, yPos);
-    pdf.text(`  Total Impressions: ${performanceData.metrics.impressions.toLocaleString()}`, 25, yPos + 6);
-    pdf.text(`  Total Clicks Generated: ${performanceData.metrics.clicks.toLocaleString()}`, 25, yPos + 12);
-    pdf.text(`  Total Conversions: ${performanceData.metrics.conversions.toLocaleString()}`, 25, yPos + 18);
+    // Structured table for investment metrics
+    yPos += 15;
+    pdf.setFillColor(250, 250, 250);
+    pdf.rect(20, yPos - 5, 170, 50, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 170, 50);
+    
+    // Table headers
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('METRIC', 30, yPos + 5);
+    pdf.text('VALUE', 120, yPos + 5);
+    pdf.line(25, yPos + 8, 185, yPos + 8);
+    
+    // Table data
+    pdf.setFont('helvetica', 'normal');
+    const investmentMetrics = [
+      ['Total Campaign Spend', `$${performanceData.metrics.totalSpend.toLocaleString()}`],
+      ['Total Impressions', performanceData.metrics.impressions.toLocaleString()],
+      ['Total Clicks', performanceData.metrics.clicks.toLocaleString()],
+      ['Total Conversions', performanceData.metrics.conversions.toLocaleString()]
+    ];
+    
+    investmentMetrics.forEach(([metric, value], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(metric, 30, rowY);
+      pdf.text(value, 120, rowY);
+    });
+    
+    yPos += 65;
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Key Performance Indicators', 20, yPos);
+    
+    // KPI table
+    yPos += 15;
+    pdf.setFillColor(245, 245, 255);
+    pdf.rect(20, yPos - 5, 170, 50, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 170, 50);
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('KPI', 30, yPos + 5);
+    pdf.text('VALUE', 120, yPos + 5);
+    pdf.text('BENCHMARK', 150, yPos + 5);
+    pdf.line(25, yPos + 8, 185, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    const kpiMetrics = [
+      ['Click-Through Rate', `${performanceData.metrics.ctr}%`, '2.5%'],
+      ['Cost Per Click', `$${performanceData.metrics.cpc}`, '$1.50'],
+      ['Return on Ad Spend', `${performanceData.metrics.roas}x`, '3.0x'],
+      ['Conversion Rate', `${performanceData.metrics.conversionRate}%`, '4.5%']
+    ];
+    
+    kpiMetrics.forEach(([kpi, value, benchmark], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(kpi, 30, rowY);
+      pdf.text(value, 120, rowY);
+      pdf.text(benchmark, 150, rowY);
+    });
+    
+    // PAGE 2: Audience Insights
+    pdf.addPage();
+    yPos = 30;
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(15, yPos - 5, 180, 15, 'F');
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('2. AUDIENCE INSIGHTS', 20, yPos + 5);
+    
     yPos += 30;
-    
-    pdf.text('Key Performance Indicators:', 20, yPos);
-    yPos += 8;
-    pdf.text(`  Click-Through Rate (CTR): ${performanceData.metrics.ctr}%`, 25, yPos);
-    pdf.text(`  Cost Per Click (CPC): $${performanceData.metrics.cpc}`, 25, yPos + 6);
-    pdf.text(`  Return on Ad Spend (ROAS): ${performanceData.metrics.roas}x`, 25, yPos + 12);
-    pdf.text(`  Conversion Rate: ${performanceData.metrics.conversionRate}%`, 25, yPos + 18);
-    yPos += 35;
-    
-    // Audience Section
-    pdf.setFontSize(20);
-    pdf.setTextColor(16, 185, 129);
-    pdf.text('AUDIENCE INSIGHTS', 20, yPos);
-    yPos += 15;
-    
     const audienceData = generateReportData('audience');
+    
+    // Gender Distribution Table
     pdf.setFontSize(12);
-    pdf.setTextColor(51, 51, 51);
-    
-    pdf.text('Gender Distribution Analysis:', 20, yPos);
-    yPos += 8;
-    Object.entries(audienceData.gender).forEach(([gender, percent]) => {
-      pdf.text(`  ${gender}: ${percent}% of total audience`, 25, yPos);
-      yPos += 6;
-    });
-    yPos += 6;
-    
-    pdf.text('Age Group Breakdown:', 20, yPos);
-    yPos += 8;
-    Object.entries(audienceData.demographics).forEach(([age, percent]) => {
-      pdf.text(`  ${age}: ${percent}% of audience`, 25, yPos);
-      yPos += 6;
-    });
-    yPos += 6;
-    
-    pdf.text('Primary Interest Categories:', 20, yPos);
-    yPos += 8;
-    Object.entries(audienceData.interests).forEach(([interest, percent]) => {
-      pdf.text(`  ${interest}: ${percent}% engagement`, 25, yPos);
-      yPos += 6;
-    });
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Gender Distribution', 20, yPos);
     yPos += 15;
+    pdf.setFillColor(250, 245, 250);
+    pdf.rect(20, yPos - 5, 80, 30, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 80, 30);
     
-    // New page if needed
-    if (yPos > 250) {
-      pdf.addPage();
-      yPos = 30;
-    }
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('GENDER', 25, yPos + 5);
+    pdf.text('PERCENTAGE', 60, yPos + 5);
+    pdf.line(22, yPos + 8, 98, yPos + 8);
     
-    // Channels Section
-    pdf.setFontSize(20);
-    pdf.setTextColor(147, 51, 234);
-    pdf.text('PLATFORM PERFORMANCE', 20, yPos);
-    yPos += 15;
+    pdf.setFont('helvetica', 'normal');
+    Object.entries(audienceData.gender).forEach(([gender, percent], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(gender, 25, rowY);
+      pdf.text(`${percent}%`, 60, rowY);
+    });
     
+    // Age Demographics Table
+    yPos += 50;
     pdf.setFontSize(12);
-    pdf.setTextColor(51, 51, 51);
-    pdf.text('Individual Platform Analysis:', 20, yPos);
-    yPos += 10;
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Age Demographics', 20, yPos);
+    yPos += 15;
+    pdf.setFillColor(245, 250, 245);
+    pdf.rect(20, yPos - 5, 100, 50, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 100, 50);
     
-    ['Facebook', 'Instagram', 'Google Ads', 'Email', 'Twitter'].forEach(platform => {
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('AGE GROUP', 25, yPos + 5);
+    pdf.text('PERCENTAGE', 80, yPos + 5);
+    pdf.line(22, yPos + 8, 118, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    Object.entries(audienceData.demographics).forEach(([age, percent], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(age, 25, rowY);
+      pdf.text(`${percent}%`, 80, rowY);
+    });
+    
+    // Interest Categories Table
+    yPos += 70;
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Interest Categories', 20, yPos);
+    yPos += 15;
+    pdf.setFillColor(250, 250, 245);
+    pdf.rect(20, yPos - 5, 100, 40, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 100, 40);
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INTEREST', 25, yPos + 5);
+    pdf.text('PERCENTAGE', 80, yPos + 5);
+    pdf.line(22, yPos + 8, 118, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    Object.entries(audienceData.interests).forEach(([interest, percent], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(interest, 25, rowY);
+      pdf.text(`${percent}%`, 80, rowY);
+    });
+    
+    // PAGE 3: Platform Performance
+    pdf.addPage();
+    yPos = 30;
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(15, yPos - 5, 180, 15, 'F');
+    pdf.setFontSize(16);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('3. PLATFORM PERFORMANCE', 20, yPos + 5);
+    
+    yPos += 30;
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Platform Performance Summary', 20, yPos);
+    
+    // Platform performance table
+    yPos += 15;
+    pdf.setFillColor(250, 250, 250);
+    pdf.rect(20, yPos - 5, 170, 80, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 170, 80);
+    
+    // Table headers
+    pdf.setFontSize(9);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('PLATFORM', 25, yPos + 5);
+    pdf.text('SPEND', 70, yPos + 5);
+    pdf.text('CONVERSIONS', 100, yPos + 5);
+    pdf.text('ROI', 140, yPos + 5);
+    pdf.text('EFFICIENCY', 160, yPos + 5);
+    pdf.line(22, yPos + 8, 188, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    ['Facebook', 'Instagram', 'Google Ads', 'Email', 'Twitter'].forEach((platform, index) => {
       const data = platformData[platform];
       let campaignData = null;
       if (data && data.campaigns) {
@@ -287,66 +402,106 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
       const spend = campaignData?.metrics.cost || Math.floor(Math.random() * 5000 + 1000);
       const conversions = campaignData?.metrics.conversions || Math.floor(Math.random() * 100 + 20);
       const roi = campaignData?.metrics.roi || (Math.random() * 3 + 1).toFixed(1);
+      const efficiency = Math.round(roi * 30);
       
-      pdf.text(`${platform}:`, 25, yPos);
-      pdf.text(`  Investment: $${spend.toLocaleString()}`, 30, yPos + 6);
-      pdf.text(`  Conversions Generated: ${conversions}`, 30, yPos + 12);
-      pdf.text(`  Return on Investment: ${roi}x`, 30, yPos + 18);
-      pdf.text(`  Performance Rating: ${Math.round(roi * 30)}% efficiency`, 30, yPos + 24);
-      yPos += 35;
+      const rowY = yPos + 15 + (index * 10);
+      pdf.text(platform, 25, rowY);
+      pdf.text(`$${spend.toLocaleString()}`, 70, rowY);
+      pdf.text(conversions.toString(), 100, rowY);
+      pdf.text(`${roi}x`, 140, rowY);
+      pdf.text(`${efficiency}%`, 160, rowY);
     });
     
-    // AI Predictions Section
-    if (yPos > 200) {
-      pdf.addPage();
-      yPos = 30;
-    }
-    
-    pdf.setFontSize(20);
-    pdf.setTextColor(245, 101, 101);
-    pdf.text('AI STRATEGIC RECOMMENDATIONS', 20, yPos);
-    yPos += 15;
-    
-    pdf.setFontSize(12);
-    pdf.setTextColor(51, 51, 51);
-    
-    const predictionsData = generateReportData('predictions');
-    pdf.text('Recommended Optimization Actions:', 20, yPos);
-    yPos += 10;
-    predictionsData.recommendations.forEach((rec, index) => {
-      const impact = ['High', 'Medium', 'High', 'Medium'][index];
-      pdf.text(`${index + 1}. ${rec} (Impact: ${impact})`, 25, yPos);
-      yPos += 8;
-    });
-    yPos += 10;
-    
-    pdf.text('Projected Performance Improvements:', 20, yPos);
-    yPos += 10;
-    pdf.text(`  Expected Conversion Increase: +${predictionsData.predictions.conversionIncrease}%`, 25, yPos);
-    pdf.text(`  Projected Cost Reduction: -${predictionsData.predictions.cpaReduction}% in CPA`, 25, yPos + 6);
-    pdf.text(`  ROAS Enhancement: +${predictionsData.predictions.roasImprovement}% improvement`, 25, yPos + 12);
-    pdf.text(`  Audience Engagement Growth: +${predictionsData.predictions.engagementBoost}%`, 25, yPos + 18);
-    yPos += 30;
-    
-    // Summary
+    // PAGE 4: AI Recommendations
+    pdf.addPage();
+    yPos = 30;
+    pdf.setFillColor(240, 240, 240);
+    pdf.rect(15, yPos - 5, 180, 15, 'F');
     pdf.setFontSize(16);
-    pdf.setTextColor(37, 99, 235);
-    pdf.text('EXECUTIVE SUMMARY', 20, yPos);
-    yPos += 12;
-    pdf.setFontSize(10);
-    pdf.setTextColor(51, 51, 51);
-    pdf.text(`This comprehensive analysis shows strong performance across`, 20, yPos);
-    pdf.text(`multiple platforms with a total investment of $${performanceData.metrics.totalSpend.toLocaleString()} generating`, 20, yPos + 5);
-    pdf.text(`${performanceData.metrics.conversions.toLocaleString()} conversions. Implementation of AI recommendations could`, 20, yPos + 10);
-    pdf.text(`potentially increase performance by up to ${predictionsData.predictions.conversionIncrease}%.`, 20, yPos + 15);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('4. AI STRATEGIC RECOMMENDATIONS', 20, yPos + 5);
     
-    pdf.save(`${selectedCampaign.name}-Complete-Analytics-Report.pdf`);
+    yPos += 30;
+    const predictionsData = generateReportData('predictions');
+    
+    // Optimization Actions Table
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Optimization Actions', 20, yPos);
+    yPos += 15;
+    pdf.setFillColor(255, 250, 250);
+    pdf.rect(20, yPos - 5, 170, 70, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 170, 70);
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('#', 25, yPos + 5);
+    pdf.text('RECOMMENDATION', 35, yPos + 5);
+    pdf.text('IMPACT', 150, yPos + 5);
+    pdf.text('PRIORITY', 170, yPos + 5);
+    pdf.line(22, yPos + 8, 188, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    const impacts = ['High', 'Medium', 'High', 'Medium'];
+    const priorities = ['1', '3', '2', '4'];
+    
+    predictionsData.recommendations.forEach((rec, index) => {
+      const rowY = yPos + 15 + (index * 12);
+      pdf.text((index + 1).toString(), 25, rowY);
+      pdf.text(rec.substring(0, 45), 35, rowY);
+      pdf.text(impacts[index], 150, rowY);
+      pdf.text(priorities[index], 170, rowY);
+    });
+    
+    // Performance Projections Table
+    yPos += 90;
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('Performance Projections', 20, yPos);
+    yPos += 15;
+    pdf.setFillColor(245, 255, 245);
+    pdf.rect(20, yPos - 5, 170, 50, 'F');
+    pdf.setDrawColor(200, 200, 200);
+    pdf.rect(20, yPos - 5, 170, 50);
+    
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('METRIC', 30, yPos + 5);
+    pdf.text('PROJECTED CHANGE', 100, yPos + 5);
+    pdf.text('CONFIDENCE', 150, yPos + 5);
+    pdf.line(25, yPos + 8, 185, yPos + 8);
+    
+    pdf.setFont('helvetica', 'normal');
+    const projections = [
+      ['Conversion Increase', `+${predictionsData.predictions.conversionIncrease}%`, '85%'],
+      ['Cost Reduction', `-${predictionsData.predictions.cpaReduction}%`, '78%'],
+      ['ROAS Improvement', `+${predictionsData.predictions.roasImprovement}%`, '82%'],
+      ['Engagement Growth', `+${predictionsData.predictions.engagementBoost}%`, '90%']
+    ];
+    
+    projections.forEach(([metric, change, confidence], index) => {
+      const rowY = yPos + 15 + (index * 8);
+      pdf.text(metric, 30, rowY);
+      pdf.text(change, 100, rowY);
+      pdf.text(confidence, 150, rowY);
+    });
+    
+    // Footer on last page
+    yPos = 270;
+    pdf.setFillColor(37, 99, 235);
+    pdf.rect(0, yPos, 210, 20, 'F');
+    pdf.setFontSize(10);
+    pdf.setTextColor(255, 255, 255);
+    pdf.text('AI-Driven Marketing Campaign Analytics Platform', 20, yPos + 12);
+    
+    pdf.save(`${selectedCampaign.name}-Analytics-Report.pdf`);
   };
 
   const sections = [
-    { id: 'performance', label: 'Performance', icon: TrendingUp },
-    { id: 'audience', label: 'Audience', icon: Users },
-    { id: 'channels', label: 'Channels', icon: Target },
+    { id: 'performance', label: 'Performance', icon: BarChart3 },
+    { id: 'audience', label: 'Audience', icon: Users2 },
+    { id: 'channels', label: 'Channels', icon: Layers3 },
     { id: 'predictions', label: 'AI Predictions', icon: Brain }
   ];
 
@@ -356,75 +511,75 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
         const performanceData = generateReportData('performance');
         return (
           <div className="space-y-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200 shadow-sm">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">$</span>
+                  <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <BarChart3 className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-xs font-semibold text-blue-600 bg-blue-200 px-2 py-1 rounded-full">SPEND</span>
+                  <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded-full">SPEND</span>
                 </div>
-                <div className="text-3xl font-black text-blue-900 mb-1">${performanceData.metrics.totalSpend.toLocaleString()}</div>
-                <div className="text-sm font-medium text-blue-700">Total Campaign Spend</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">${performanceData.metrics.totalSpend.toLocaleString()}</div>
+                <div className="text-xs font-medium text-gray-600">Total Campaign Spend</div>
               </div>
               
-              <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200 shadow-sm">
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">👁</span>
+                  <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
+                    <Users2 className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-xs font-semibold text-emerald-600 bg-emerald-200 px-2 py-1 rounded-full">REACH</span>
+                  <span className="text-xs font-medium text-emerald-600 bg-emerald-100 px-2 py-1 rounded-full">REACH</span>
                 </div>
-                <div className="text-3xl font-black text-emerald-900 mb-1">{performanceData.metrics.impressions.toLocaleString()}</div>
-                <div className="text-sm font-medium text-emerald-700">Total Impressions</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{performanceData.metrics.impressions.toLocaleString()}</div>
+                <div className="text-xs font-medium text-gray-600">Total Impressions</div>
               </div>
               
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200 shadow-sm">
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">👆</span>
+                  <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center">
+                    <Layers3 className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-xs font-semibold text-purple-600 bg-purple-200 px-2 py-1 rounded-full">CLICKS</span>
+                  <span className="text-xs font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">CLICKS</span>
                 </div>
-                <div className="text-3xl font-black text-purple-900 mb-1">{performanceData.metrics.clicks.toLocaleString()}</div>
-                <div className="text-sm font-medium text-purple-700">Total Clicks</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{performanceData.metrics.clicks.toLocaleString()}</div>
+                <div className="text-xs font-medium text-gray-600">Total Clicks</div>
               </div>
               
-              <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl border border-orange-200 shadow-sm">
+              <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">🎯</span>
+                  <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                    <Brain className="w-4 h-4 text-white" />
                   </div>
-                  <span className="text-xs font-semibold text-orange-600 bg-orange-200 px-2 py-1 rounded-full">GOALS</span>
+                  <span className="text-xs font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">GOALS</span>
                 </div>
-                <div className="text-3xl font-black text-orange-900 mb-1">{performanceData.metrics.conversions.toLocaleString()}</div>
-                <div className="text-sm font-medium text-orange-700">Total Conversions</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{performanceData.metrics.conversions.toLocaleString()}</div>
+                <div className="text-xs font-medium text-gray-600">Total Conversions</div>
               </div>
             </div>
             
-            <div className="bg-gradient-to-r from-slate-50 to-slate-100 p-8 rounded-xl border border-slate-200 shadow-sm">
-              <h4 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
-                <span className="w-10 h-10 bg-slate-600 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold text-lg">📊</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <BarChart3 className="w-4 h-4 text-white" />
                 </span>
                 Key Performance Indicators
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-black text-indigo-600 mb-2">{performanceData.metrics.ctr}%</div>
-                  <div className="text-sm font-semibold text-slate-600">Click-Through Rate</div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-indigo-600 mb-1">{performanceData.metrics.ctr}%</div>
+                  <div className="text-xs font-medium text-gray-600">Click-Through Rate</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-black text-rose-600 mb-2">${performanceData.metrics.cpc}</div>
-                  <div className="text-sm font-semibold text-slate-600">Cost Per Click</div>
+                <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-rose-600 mb-1">${performanceData.metrics.cpc}</div>
+                  <div className="text-xs font-medium text-gray-600">Cost Per Click</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-black text-emerald-600 mb-2">{performanceData.metrics.roas}x</div>
-                  <div className="text-sm font-semibold text-slate-600">Return on Ad Spend</div>
+                <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-emerald-600 mb-1">{performanceData.metrics.roas}x</div>
+                  <div className="text-xs font-medium text-gray-600">Return on Ad Spend</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-black text-amber-600 mb-2">{performanceData.metrics.conversionRate}%</div>
-                  <div className="text-sm font-semibold text-slate-600">Conversion Rate</div>
+                <div className="text-center bg-white p-4 rounded-lg">
+                  <div className="text-2xl font-bold text-amber-600 mb-1">{performanceData.metrics.conversionRate}%</div>
+                  <div className="text-xs font-medium text-gray-600">Conversion Rate</div>
                 </div>
               </div>
             </div>
@@ -434,50 +589,50 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
         const audienceData = generateReportData('audience');
         return (
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-pink-50 to-blue-50 p-8 rounded-xl border border-pink-200 shadow-sm">
-              <h4 className="text-xl font-black text-gray-800 mb-6 flex items-center">
-                <span className="w-8 h-8 bg-gradient-to-r from-pink-500 to-blue-500 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold">👥</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <Users2 className="w-4 h-4 text-white" />
                 </span>
                 Gender Distribution
               </h4>
               <div className="grid grid-cols-2 gap-6">
                 {Object.entries(audienceData.gender).map(([gender, percent]) => (
-                  <div key={gender} className="bg-white/80 p-6 rounded-xl shadow-sm">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-6 h-6 rounded-full ${gender === 'Male' ? 'bg-gradient-to-r from-blue-400 to-blue-600' : 'bg-gradient-to-r from-pink-400 to-pink-600'}`}></div>
-                        <span className="font-bold text-gray-800">{gender}</span>
+                  <div key={gender} className="bg-white p-4 rounded-lg shadow-sm">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <div className={`w-4 h-4 rounded-full ${gender === 'Male' ? 'bg-blue-500' : 'bg-pink-500'}`}></div>
+                        <span className="font-medium text-gray-800 text-sm">{gender}</span>
                       </div>
-                      <span className={`text-2xl font-black ${gender === 'Male' ? 'text-blue-600' : 'text-pink-600'}`}>{percent}%</span>
+                      <span className={`text-lg font-bold ${gender === 'Male' ? 'text-blue-600' : 'text-pink-600'}`}>{percent}%</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className={`h-3 rounded-full ${gender === 'Male' ? 'bg-gradient-to-r from-blue-400 to-blue-600' : 'bg-gradient-to-r from-pink-400 to-pink-600'}`} style={{ width: `${percent}%` }}></div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className={`h-2 rounded-full ${gender === 'Male' ? 'bg-blue-500' : 'bg-pink-500'}`} style={{ width: `${percent}%` }}></div>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 rounded-xl border border-indigo-200 shadow-sm">
-              <h4 className="text-xl font-black text-gray-800 mb-6 flex items-center">
-                <span className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold">📊</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <BarChart3 className="w-4 h-4 text-white" />
                 </span>
                 Age Demographics
               </h4>
               <div className="space-y-4">
                 {Object.entries(audienceData.demographics).map(([age, percent], index) => {
-                  const colors = ['from-indigo-400 to-indigo-600', 'from-purple-400 to-purple-600', 'from-blue-400 to-blue-600', 'from-violet-400 to-violet-600'];
+                  const colors = ['bg-indigo-500', 'bg-purple-500', 'bg-blue-500', 'bg-violet-500'];
                   const textColors = ['text-indigo-600', 'text-purple-600', 'text-blue-600', 'text-violet-600'];
                   return (
-                    <div key={age} className="bg-white/80 p-4 rounded-xl shadow-sm">
+                    <div key={age} className="bg-white p-3 rounded-lg shadow-sm">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="font-bold text-gray-800">{age}</span>
-                        <span className={`text-lg font-black ${textColors[index]}`}>{percent}%</span>
+                        <span className="font-medium text-gray-800 text-sm">{age}</span>
+                        <span className={`text-base font-bold ${textColors[index]}`}>{percent}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div className={`bg-gradient-to-r ${colors[index]} h-2 rounded-full`} style={{ width: `${percent}%` }}></div>
+                        <div className={`${colors[index]} h-2 rounded-full`} style={{ width: `${percent}%` }}></div>
                       </div>
                     </div>
                   );
@@ -485,10 +640,10 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-8 rounded-xl border border-emerald-200 shadow-sm">
-              <h4 className="text-xl font-black text-gray-800 mb-6 flex items-center">
-                <span className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold">🎯</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <Layers3 className="w-4 h-4 text-white" />
                 </span>
                 Interest Categories
               </h4>
@@ -497,9 +652,9 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
                   const bgColors = ['bg-emerald-100', 'bg-teal-100', 'bg-cyan-100'];
                   const textColors = ['text-emerald-600', 'text-teal-600', 'text-cyan-600'];
                   return (
-                    <div key={interest} className={`${bgColors[index]} p-4 rounded-xl text-center`}>
-                      <div className={`text-2xl font-black ${textColors[index]} mb-1`}>{percent}%</div>
-                      <div className="text-sm font-semibold text-gray-700">{interest}</div>
+                    <div key={interest} className={`${bgColors[index]} p-4 rounded-lg text-center`}>
+                      <div className={`text-lg font-bold ${textColors[index]} mb-1`}>{percent}%</div>
+                      <div className="text-xs font-medium text-gray-700">{interest}</div>
                     </div>
                   );
                 })}
@@ -510,8 +665,13 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
       case 'channels':
         return (
           <div className="space-y-6">
-            <div className="bg-gray-50 p-6 rounded-lg">
-              <h4 className="font-semibold mb-4">Platform Performance</h4>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <Layers3 className="w-4 h-4 text-white" />
+                </span>
+                Platform Performance
+              </h4>
               <div className="space-y-4">
                 {['Facebook', 'Instagram', 'Google Ads', 'Email', 'Twitter'].map((platform, index) => {
                   const platformInfo = getPlatformIcon(platform);
@@ -532,15 +692,15 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
                   const status = ['Active', 'Paused', 'Learning'][Math.floor(Math.random() * 3)];
                   
                   return (
-                    <div key={index} className={`${platformInfo.bg} p-6 rounded-xl border-2 shadow-sm hover:shadow-md transition-shadow`}>
+                    <div key={index} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
                       <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-4">
-                          <div className={`w-12 h-12 ${platformInfo.bg} border-2 border-white rounded-xl flex items-center justify-center shadow-sm`}>
-                            <Icon className={`w-7 h-7 ${platformInfo.color}`} />
+                        <div className="flex items-center space-x-3">
+                          <div className={`w-10 h-10 ${platformInfo.bg} border border-gray-200 rounded-lg flex items-center justify-center shadow-sm`}>
+                            <Icon className={`w-5 h-5 ${platformInfo.color}`} />
                           </div>
                           <div>
-                            <h5 className="font-bold text-gray-900 text-lg">{platform}</h5>
-                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${
+                            <h5 className="font-semibold text-gray-900 text-base">{platform}</h5>
+                            <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                               status === 'Active' ? 'bg-green-100 text-green-800' :
                               status === 'Paused' ? 'bg-red-100 text-red-800' :
                               'bg-yellow-100 text-yellow-800'
@@ -550,7 +710,7 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
                           </div>
                         </div>
                         <div className="text-right">
-                          <div className={`flex items-center space-x-1 text-sm font-semibold ${
+                          <div className={`flex items-center space-x-1 text-xs font-medium ${
                             trend === 'up' ? 'text-green-600' : 'text-red-600'
                           }`}>
                             <span>{trend === 'up' ? '↗' : '↘'}</span>
@@ -560,22 +720,22 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-4 gap-4">
-                        <div className="bg-white/70 p-3 rounded-lg">
-                          <div className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Spend</div>
-                          <div className="text-lg font-black text-gray-900">${spend.toLocaleString()}</div>
+                      <div className="grid grid-cols-4 gap-3 mt-3">
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">Spend</div>
+                          <div className="text-sm font-bold text-gray-900">${spend.toLocaleString()}</div>
                         </div>
-                        <div className="bg-white/70 p-3 rounded-lg">
-                          <div className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Conversions</div>
-                          <div className="text-lg font-black text-gray-900">{conversions}</div>
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">Conversions</div>
+                          <div className="text-sm font-bold text-gray-900">{conversions}</div>
                         </div>
-                        <div className="bg-white/70 p-3 rounded-lg">
-                          <div className="text-xs font-semibold text-gray-600 uppercase tracking-wide">ROI</div>
-                          <div className="text-lg font-black text-emerald-600">{roi}x</div>
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">ROI</div>
+                          <div className="text-sm font-bold text-emerald-600">{roi}x</div>
                         </div>
-                        <div className="bg-white/70 p-3 rounded-lg">
-                          <div className="text-xs font-semibold text-gray-600 uppercase tracking-wide">Efficiency</div>
-                          <div className={`text-lg font-black ${platformInfo.color}`}>
+                        <div className="bg-gray-50 p-3 rounded-lg">
+                          <div className="text-xs font-medium text-gray-600 uppercase tracking-wide">Efficiency</div>
+                          <div className="text-sm font-bold text-blue-600">
                             {Math.round(roi * 30)}%
                           </div>
                         </div>
@@ -590,10 +750,10 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
       case 'predictions':
         return (
           <div className="space-y-6">
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-xl border border-blue-200 shadow-sm">
-              <h4 className="text-xl font-black text-gray-800 mb-6 flex items-center">
-                <span className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold">🤖</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <Brain className="w-4 h-4 text-white" />
                 </span>
                 AI Strategic Recommendations
               </h4>
@@ -604,10 +764,10 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
                   { text: 'Target lookalike audiences', impact: 'High', color: 'from-green-400 to-green-600' },
                   { text: 'A/B test creative variations', impact: 'Medium', color: 'from-blue-400 to-blue-600' }
                 ].map((rec, index) => (
-                  <div key={index} className="bg-white/80 p-4 rounded-xl shadow-sm border-l-4 border-blue-400">
+                  <div key={index} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-400">
                     <div className="flex items-start justify-between mb-2">
-                      <span className="text-sm font-semibold text-gray-800">{rec.text}</span>
-                      <span className={`px-2 py-1 rounded-full text-xs font-bold text-white bg-gradient-to-r ${rec.color}`}>
+                      <span className="text-sm font-medium text-gray-800">{rec.text}</span>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium text-white ${rec.impact === 'High' ? 'bg-green-500' : rec.impact === 'Medium' ? 'bg-yellow-500' : 'bg-blue-500'}`}>
                         {rec.impact}
                       </span>
                     </div>
@@ -616,26 +776,26 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-emerald-50 to-green-50 p-8 rounded-xl border border-emerald-200 shadow-sm">
-              <h4 className="text-xl font-black text-gray-800 mb-6 flex items-center">
-                <span className="w-8 h-8 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center mr-3">
-                  <span className="text-white font-bold">📈</span>
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 shadow-sm">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                <span className="w-8 h-8 bg-gray-600 rounded-lg flex items-center justify-center mr-3">
+                  <BarChart3 className="w-4 h-4 text-white" />
                 </span>
                 Predicted Performance Outcomes
               </h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { label: 'Conversions', value: '+23%', icon: '🎯', color: 'from-emerald-400 to-emerald-600', bg: 'bg-emerald-100' },
-                  { label: 'CPA Reduction', value: '-12%', icon: '💰', color: 'from-blue-400 to-blue-600', bg: 'bg-blue-100' },
-                  { label: 'ROAS Improvement', value: '+18%', icon: '📊', color: 'from-purple-400 to-purple-600', bg: 'bg-purple-100' },
-                  { label: 'Engagement Boost', value: '+31%', icon: '❤️', color: 'from-pink-400 to-pink-600', bg: 'bg-pink-100' }
+                  { label: 'Conversions', value: '+23%', icon: '🎯', color: 'text-emerald-600', bg: 'bg-emerald-100' },
+                  { label: 'CPA Reduction', value: '-12%', icon: '💰', color: 'text-blue-600', bg: 'bg-blue-100' },
+                  { label: 'ROAS Improvement', value: '+18%', icon: '📊', color: 'text-purple-600', bg: 'bg-purple-100' },
+                  { label: 'Engagement Boost', value: '+31%', icon: '❤️', color: 'text-pink-600', bg: 'bg-pink-100' }
                 ].map((outcome, index) => (
-                  <div key={index} className={`${outcome.bg} p-6 rounded-xl text-center shadow-sm`}>
-                    <div className="text-2xl mb-2">{outcome.icon}</div>
-                    <div className={`text-2xl font-black bg-gradient-to-r ${outcome.color} bg-clip-text text-transparent mb-1`}>
+                  <div key={index} className={`${outcome.bg} p-4 rounded-lg text-center shadow-sm`}>
+                    <div className="text-lg mb-2">{outcome.icon}</div>
+                    <div className={`text-lg font-bold ${outcome.color} mb-1`}>
                       {outcome.value}
                     </div>
-                    <div className="text-sm font-semibold text-gray-700">{outcome.label}</div>
+                    <div className="text-xs font-medium text-gray-700">{outcome.label}</div>
                   </div>
                 ))}
               </div>
@@ -648,50 +808,49 @@ const DeepAnalyticsModal = ({ isOpen, onClose, selectedCampaign }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ overflow: 'hidden' }}>
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" style={{ overflow: 'hidden' }}>
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[85vh] flex flex-col">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Deep Analytics</h2>
-            <p className="text-gray-600 mt-1">Campaign: {selectedCampaign.name}</p>
+            <h2 className="text-xl font-bold text-gray-900">Deep Analytics</h2>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-6 h-6 text-gray-500" />
+            <X className="w-5 h-5 text-gray-500" />
           </button>
         </div>
 
-        <div className="flex border-b border-gray-200">
+        <div className="flex gap-2 p-4 bg-gray-50 border-b border-gray-200">
           {sections.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveSection(id)}
-              className={`flex items-center space-x-2 px-6 py-4 border-b-2 transition-colors ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors text-sm font-medium ${
                 activeSection === id
-                  ? 'border-blue-600 text-blue-600 bg-blue-50'
-                  : 'border-transparent text-gray-600 hover:text-gray-900'
+                  ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                  : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:text-gray-900'
               }`}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-4 h-4" />
               <span>{label}</span>
             </button>
           ))}
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-8">
           {renderSectionContent()}
         </div>
         
-        <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
+        <div className="flex items-center justify-end space-x-3 p-4 border-t border-gray-200 bg-gray-50">
           <button
             onClick={downloadReport}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
           >
             <Download className="w-4 h-4" />
             <span>Export PDF</span>
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm"
           >
             Close
           </button>

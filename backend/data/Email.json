@@ -1,61 +1,23 @@
 {
     "platform": "Email",
     "campaigns": {
-        "c999f5ac-e812-45f5-b801-bf6de417f281": {
+        "e1d63f8b-63bf-4f75-81e1-eb02ec87087e": {
             "name": "Winter Offers",
             "metrics": {
-                "impressions": 2761,
-                "clicks": 312,
-                "cost": 207.33,
-                "conversions": 46,
-                "ctr": 4.09,
-                "cpc": 0.53,
-                "cpm": 75.11,
-                "conversion_rate": 14.74,
-                "roi": 2.03,
-                "sentiment_score": 0.73,
+                "impressions": 3324,
+                "clicks": 416,
+                "cost": 497.78,
+                "conversions": 20,
+                "ctr": 2.15,
+                "cpc": 1.23,
+                "cpm": 144.63,
+                "conversion_rate": 13.51,
+                "roi": 2.47,
+                "sentiment_score": 0.86,
                 "forecast_data": {
-                    "projected_roi": 4.1,
-                    "projected_conversions": 63,
-                    "confidence_score": "90%"
-                },
-                "schedule_data": {
-                    "duration_days": 30,
-                    "next_run": "",
-                    "frequency": "Daily"
-                },
-                "budget": 1000.0,
-                "target_audience": 100,
-                "audience_insight": {
-                    "primary_segment": "At-Risk",
-                    "top_region": "North America",
-                    "engagement_depth": "Low",
-                    "gender": {"Male": 50, "Female": 50},
-                    "age": {"18-24": 20, "25-34": 35, "35-44": 30, "45+": 15}
-                },
-                "detailed_stats": {
-                    "Open Rate": "19%",
-                    "Click Rate": "4%"
-                }
-            }
-        },
-        "eb553083-3b28-4e36-9da3-14e675ee0a20": {
-            "name": "New Offers",
-            "metrics": {
-                "impressions": 2311,
-                "clicks": 501,
-                "cost": 475.04,
-                "conversions": 37,
-                "ctr": 2.93,
-                "cpc": 1.97,
-                "cpm": 147.98,
-                "conversion_rate": 16.2,
-                "roi": 1.53,
-                "sentiment_score": 0.92,
-                "forecast_data": {
-                    "projected_roi": 2.1,
-                    "projected_conversions": 71,
-                    "confidence_score": "70%"
+                    "projected_roi": 3.5,
+                    "projected_conversions": 399,
+                    "confidence_score": "86%"
                 },
                 "schedule_data": {
                     "duration_days": 30,
@@ -63,17 +25,51 @@
                     "frequency": "Daily"
                 },
                 "budget": 10000.0,
-                "target_audience": 100,
+                "target_audience": 10000,
                 "audience_insight": {
-                    "primary_segment": "High-Value",
-                    "top_region": "North America",
-                    "engagement_depth": "High",
-                    "gender": {"Male": 45, "Female": 55},
-                    "age": {"18-24": 15, "25-34": 40, "35-44": 30, "45+": 15}
+                    "primary_segment": "Loyal",
+                    "top_region": "Europe",
+                    "engagement_depth": "Medium"
                 },
                 "detailed_stats": {
-                    "Open Rate": "21%",
-                    "Click Rate": "5%"
+                    "Open Rate": "20%",
+                    "Click Rate": "8%"
+                }
+            }
+        },
+        "bd639b52-7fd0-4384-808d-267dbe40166c": {
+            "name": "Big Billion Days",
+            "metrics": {
+                "impressions": 3426,
+                "clicks": 298,
+                "cost": 402.53,
+                "conversions": 17,
+                "ctr": 2.71,
+                "cpc": 1.88,
+                "cpm": 81.86,
+                "conversion_rate": 9.89,
+                "roi": 2.02,
+                "sentiment_score": 0.92,
+                "forecast_data": {
+                    "projected_roi": 2.7,
+                    "projected_conversions": 309,
+                    "confidence_score": "87%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 50000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Loyal",
+                    "top_region": "Global",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Open Rate": "31%",
+                    "Click Rate": "6%"
                 }
             }
         }

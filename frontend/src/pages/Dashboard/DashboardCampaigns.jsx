@@ -38,7 +38,7 @@ const CampaignRow = ({ name, status, budget, roi, progress }) => (
 const DashboardCampaigns = ({ selectedCampaign, timeRange }) => {
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedTimeFilter, setSelectedTimeFilter] = useState('1');
+    const [selectedTimeFilter, setSelectedTimeFilter] = useState('30');
     const [allActivities, setAllActivities] = useState([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
