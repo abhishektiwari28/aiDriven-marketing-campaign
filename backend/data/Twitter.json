@@ -10,6 +10,8 @@
                 "conversions": 87,
                 "ctr": 2.2,
                 "cpc": 1.27,
+                "cpm": 29.97,
+                "conversion_rate": 11.11,
                 "roi": 1.8,
                 "sentiment_score": 0.53,
                 "forecast_data": {
@@ -30,6 +32,41 @@
                 },
                 "detailed_stats": {
                     "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "eb553083-3b28-4e36-9da3-14e675ee0a20": {
+            "name": "New Offers",
+            "metrics": {
+                "impressions": 6561,
+                "clicks": 1207,
+                "cost": 552.09,
+                "conversions": 85,
+                "ctr": 3.31,
+                "cpc": 1.94,
+                "cpm": 70.91,
+                "conversion_rate": 10.88,
+                "roi": 2.69,
+                "sentiment_score": 0.68,
+                "forecast_data": {
+                    "projected_roi": 4.5,
+                    "projected_conversions": 225,
+                    "confidence_score": "90%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 10000.0,
+                "target_audience": 100,
+                "audience_insight": {
+                    "primary_segment": "Gamers",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Winner",
                     "Ad 2": "Testing"
                 }
             }

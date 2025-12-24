@@ -124,6 +124,8 @@ class PlatformAPI:
                 "conversions": random.randint(10, 50),
                 "ctr": round(random.uniform(1.5, 5.0), 2),
                 "cpc": round(random.uniform(0.5, 2.0), 2),
+                "cpm": round(random.uniform(50, 150), 2),
+                "conversion_rate": round(random.uniform(8, 20), 2),
                 "roi": round(random.uniform(1.2, 3.5), 2),
                 "sentiment_score": round(random.uniform(0.6, 0.95), 2),
                 "forecast_data": forecast_data,
@@ -148,6 +150,8 @@ class PlatformAPI:
                 "conversions": random.randint(20, 150),
                 "ctr": round(random.uniform(0.8, 3.5), 2),
                 "cpc": round(random.uniform(0.8, 2.5), 2),
+                "cpm": round(random.uniform(20, 80), 2),
+                "conversion_rate": round(random.uniform(5, 25), 2),
                 "roi": round(random.uniform(1.5, 4.0), 2),
                 "sentiment_score": round(random.uniform(0.4, 0.9), 2), 
                 "forecast_data": forecast_data,
@@ -182,6 +186,8 @@ class PlatformAPI:
         total_conversions = 0
         total_cost = 0
         roi_sum = 0
+        cpm_sum = 0
+        conversion_rate_sum = 0
         campaign_count = 0
         
         # For audience aggregation (simple majority or last seen)
@@ -195,6 +201,8 @@ class PlatformAPI:
             total_conversions += m.get("conversions", 0)
             total_cost += m.get("cost", 0)
             roi_sum += m.get("roi", 0)
+            cpm_sum += m.get("cpm", 0)
+            conversion_rate_sum += m.get("conversion_rate", 0)
             campaign_count += 1
             
             if "audience_insight" in m:
@@ -204,6 +212,8 @@ class PlatformAPI:
         avg_roi = round(roi_sum / campaign_count, 2) if campaign_count > 0 else 0
         avg_ctr = (total_clicks / total_impressions * 100) if total_impressions > 0 else 0
         avg_cpc = (total_cost / total_clicks) if total_clicks > 0 else 0
+        avg_cpm = round(cpm_sum / campaign_count, 2) if campaign_count > 0 else 0
+        avg_conversion_rate = round(conversion_rate_sum / campaign_count, 2) if campaign_count > 0 else 0
         
         # Determine aggregate audience insight
         primary_segment = max(set(segments), key=segments.count) if segments else "General"
@@ -219,7 +229,9 @@ class PlatformAPI:
                 "roi": avg_roi,
                 "sentiment_score": 0.85, 
                 "ctr": round(avg_ctr, 2),
-                "cpc": round(avg_cpc, 2)
+                "cpc": round(avg_cpc, 2),
+                "cpm": avg_cpm,
+                "conversion_rate": avg_conversion_rate
             },
             "audience_insight": {
                 "primary_segment": primary_segment,
@@ -255,4 +267,15 @@ class PlatformAPI:
                 campaigns_map[c_id]["platforms"].append(p)
         
         return list(campaigns_map.values())
+
+    @staticmethod
+    def delete_campaign_from_platform(campaign_id: str, platform: str):
+        """Removes a campaign from a specific platform file."""
+        filename = f"{platform}.json"
+        data = PlatformAPI._read_json(filename)
+        
+        if str(campaign_id) in data.get("campaigns", {}):
+            del data["campaigns"][str(campaign_id)]
+            PlatformAPI._write_json(filename, data)
+            print(f"Removed campaign {campaign_id} from {platform}")
 

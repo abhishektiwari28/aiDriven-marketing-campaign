@@ -10,6 +10,8 @@
                 "conversions": 134,
                 "ctr": 2.55,
                 "cpc": 1.1,
+                "cpm": 76.41,
+                "conversion_rate": 14.38,
                 "roi": 1.61,
                 "sentiment_score": 0.5,
                 "forecast_data": {
@@ -43,6 +45,8 @@
                 "conversions": 109,
                 "ctr": 0.9,
                 "cpc": 2.41,
+                "cpm": 63.08,
+                "conversion_rate": 49.55,
                 "roi": 3.84,
                 "sentiment_score": 0.65,
                 "forecast_data": {
@@ -63,6 +67,41 @@
                 },
                 "detailed_stats": {
                     "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "07765662-8fe2-4e0c-a21c-00efc13aeae3": {
+            "name": "Offers",
+            "metrics": {
+                "impressions": 14360,
+                "clicks": 1487,
+                "cost": 847.66,
+                "conversions": 28,
+                "ctr": 2.9,
+                "cpc": 1.58,
+                "cpm": 76.78,
+                "conversion_rate": 19.42,
+                "roi": 2.46,
+                "sentiment_score": 0.81,
+                "forecast_data": {
+                    "projected_roi": 2.2,
+                    "projected_conversions": 492,
+                    "confidence_score": "95%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 20000.0,
+                "target_audience": 500,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
                     "Ad 2": "Testing"
                 }
             }

@@ -6,14 +6,51 @@ import CreateCampaignModal from '../../components/CreateCampaignModal';
 const API_BASE_URL = '/api';
 
 const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
+    const getButtonConfig = () => {
+        switch (campaign.status) {
+            case 'Draft':
+                return {
+                    text: 'Launch',
+                    action: 'Launch',
+                    icon: <Play className="w-4 h-4" />,
+                    className: 'bg-emerald-600 text-white shadow-emerald-600/20 hover:bg-emerald-700'
+                };
+            case 'Active':
+                return {
+                    text: 'Pause',
+                    action: 'Pause',
+                    icon: <Pause className="w-4 h-4" />,
+                    className: 'bg-white text-amber-600 border border-amber-200 hover:bg-amber-50'
+                };
+            case 'Paused':
+                return {
+                    text: 'Resume',
+                    action: 'Resume',
+                    icon: <Play className="w-4 h-4" />,
+                    className: 'bg-indigo-600 text-white shadow-indigo-600/20 hover:bg-indigo-700'
+                };
+            default:
+                return {
+                    text: 'Launch',
+                    action: 'Launch',
+                    icon: <Play className="w-4 h-4" />,
+                    className: 'bg-indigo-600 text-white shadow-indigo-600/20 hover:bg-indigo-700'
+                };
+        }
+    };
+
+    const buttonConfig = getButtonConfig();
+
     return (
         <div className="glass-card p-6 flex flex-col gap-6 group hover:border-indigo-400/50 transition-all duration-300 shadow-sm hover:shadow-lg">
             <div className="flex justify-between items-start">
                 <div>
-                    <span className={`text-[10px] font-black px-3 py-1.5 rounded-lg border mb-3 inline-block uppercase tracking-widest ${campaign.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                    <span className={`text-[10px] font-black px-3 py-1.5 rounded-lg border mb-3 inline-block uppercase tracking-widest ${
+                        campaign.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
                         campaign.status === 'Paused' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                            'bg-slate-50 text-slate-500 border-slate-200'
-                        }`}>
+                        campaign.status === 'Draft' ? 'bg-blue-50 text-blue-700 border-blue-100' :
+                        'bg-slate-50 text-slate-500 border-slate-200'
+                    }`}>
                         {campaign.status}
                     </span>
                     <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{campaign.name}</h3>
@@ -42,17 +79,21 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
                 </div>
                 <div className="px-2">
                     <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1.5">Schedule</p>
-                    <p className="font-black text-slate-800 tracking-tight">{campaign.timeline?.duration_days}d</p>
+                    <p className="font-black text-slate-800 tracking-tight">{campaign.timeline?.duration_days || 30}d</p>
                 </div>
             </div>
 
             <div className="flex gap-4 mt-2">
                 <button
-                    className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 ${campaign.status === 'Active' ? 'bg-white text-amber-600 border border-amber-200 hover:bg-amber-50' : 'bg-indigo-600 text-white shadow-indigo-600/20 hover:bg-indigo-700'
-                        }`}
-                    onClick={() => onAction(campaign.id, campaign.status === 'Active' ? 'Pause' : 'Resume')}
+                    className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 ${buttonConfig.className}`}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onAction(campaign.id, buttonConfig.action);
+                    }}
+                    type="button"
                 >
-                    {campaign.status === 'Active' ? <><Pause className="w-4 h-4" /> Pause</> : <><Play className="w-4 h-4" /> Resume</>}
+                    {buttonConfig.icon} {buttonConfig.text}
                 </button>
                 <button
                     onClick={() => onViewDetail(campaign)}
@@ -120,19 +161,37 @@ const Campaigns = () => {
                 return;
             }
 
-            const newStatus = action === 'Resume' ? 'Active' : 'Paused';
-            const response = await axios.post(`${API_BASE_URL}/campaigns/${id}/status`, { action: action, status: newStatus });
+            // Determine new status
+            let newStatus;
+            switch (action) {
+                case 'Launch':
+                    newStatus = 'Active';
+                    break;
+                case 'Pause':
+                    newStatus = 'Paused';
+                    break;
+                case 'Resume':
+                    newStatus = 'Active';
+                    break;
+                default:
+                    return;
+            }
 
-            // Re-fetch or update local state carefully
-            setCampaigns(current => current.map(c => {
-                if (c.id === id) {
-                    return { ...c, status: response.data.status };
-                }
-                return c;
-            }));
+            // Update UI immediately
+            setCampaigns(current => current.map(c => 
+                c.id === id ? { ...c, status: newStatus } : c
+            ));
+
+            // Make API call
+            await axios.post(`${API_BASE_URL}/campaigns/${id}/status`, { 
+                action: action, 
+                status: newStatus 
+            });
 
         } catch (error) {
-            console.error(`Error performing ${action} on campaign ${id}:`, error);
+            console.error(`Error performing ${action}:`, error);
+            // Revert on error
+            fetchCampaigns();
         }
     };
 
@@ -185,9 +244,9 @@ const Campaigns = () => {
                         onChange={(e) => setFilterStatus(e.target.value)}
                     >
                         <option value="All">All Sequences</option>
+                        <option value="Draft">Draft</option>
                         <option value="Active">Active Nodes</option>
                         <option value="Paused">Suspended</option>
-                        <option value="Draft">Preliminary</option>
                     </select>
                 </div>
             </div>
