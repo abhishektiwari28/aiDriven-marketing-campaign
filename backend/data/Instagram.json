@@ -28,7 +28,17 @@
                 "target_audience": 10000,
                 "audience_insight": {
                     "primary_segment": "Professionals",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {
+                        "Male": 45,
+                        "Female": 55
+                    },
+                    "age": {
+                        "18-24": 25,
+                        "25-34": 40,
+                        "35-44": 25,
+                        "45+": 10
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Winner",
@@ -63,7 +73,17 @@
                 "target_audience": 200,
                 "audience_insight": {
                     "primary_segment": "Professionals",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {
+                        "Male": 50,
+                        "Female": 50
+                    },
+                    "age": {
+                        "18-24": 20,
+                        "25-34": 45,
+                        "35-44": 25,
+                        "45+": 10
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
@@ -98,7 +118,17 @@
                 "target_audience": 100,
                 "audience_insight": {
                     "primary_segment": "Fashionistas",
-                    "engagement_depth": "Medium"
+                    "engagement_depth": "Medium",
+                    "gender": {
+                        "Male": 30,
+                        "Female": 70
+                    },
+                    "age": {
+                        "18-24": 35,
+                        "25-34": 40,
+                        "35-44": 20,
+                        "45+": 5
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
@@ -133,7 +163,17 @@
                 "target_audience": 100,
                 "audience_insight": {
                     "primary_segment": "Gamers",
-                    "engagement_depth": "Medium"
+                    "engagement_depth": "Medium",
+                    "gender": {
+                        "Male": 75,
+                        "Female": 25
+                    },
+                    "age": {
+                        "18-24": 45,
+                        "25-34": 35,
+                        "35-44": 15,
+                        "45+": 5
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
@@ -168,10 +208,55 @@
                 "target_audience": 500,
                 "audience_insight": {
                     "primary_segment": "Fashionistas",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {
+                        "Male": 25,
+                        "Female": 75
+                    },
+                    "age": {
+                        "18-24": 30,
+                        "25-34": 45,
+                        "35-44": 20,
+                        "45+": 5
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "f84b709c-67f0-4f9e-b9ad-9278adc2a626": {
+            "name": "New Campaign",
+            "metrics": {
+                "impressions": 16041,
+                "clicks": 1490,
+                "cost": 457.16,
+                "conversions": 50,
+                "ctr": 3.11,
+                "cpc": 2.37,
+                "cpm": 22.58,
+                "conversion_rate": 8.69,
+                "roi": 2.34,
+                "sentiment_score": 0.74,
+                "forecast_data": {
+                    "projected_roi": 3.1,
+                    "projected_conversions": 491,
+                    "confidence_score": "92%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 20000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Professionals",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
                     "Ad 2": "Testing"
                 }
             }

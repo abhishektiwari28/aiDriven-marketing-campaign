@@ -28,7 +28,9 @@
                 "target_audience": 200,
                 "audience_insight": {
                     "primary_segment": "Gamers",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {"Male": 70, "Female": 30},
+                    "age": {"18-24": 40, "25-34": 35, "35-44": 20, "45+": 5}
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
@@ -63,7 +65,9 @@
                 "target_audience": 100,
                 "audience_insight": {
                     "primary_segment": "Professionals",
-                    "engagement_depth": "Medium"
+                    "engagement_depth": "Medium",
+                    "gender": {"Male": 60, "Female": 40},
+                    "age": {"18-24": 15, "25-34": 50, "35-44": 25, "45+": 10}
                 },
                 "detailed_stats": {
                     "Ad 1": "Learning",
@@ -98,7 +102,9 @@
                 "target_audience": 500,
                 "audience_insight": {
                     "primary_segment": "Fashionistas",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {"Male": 35, "Female": 65},
+                    "age": {"18-24": 25, "25-34": 40, "35-44": 25, "45+": 10}
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",

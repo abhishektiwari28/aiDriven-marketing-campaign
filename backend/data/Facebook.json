@@ -28,7 +28,17 @@
                 "target_audience": 200,
                 "audience_insight": {
                     "primary_segment": "Tech Enthusiasts",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {
+                        "Male": 65,
+                        "Female": 35
+                    },
+                    "age": {
+                        "18-24": 15,
+                        "25-34": 45,
+                        "35-44": 25,
+                        "45+": 15
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Winner",
@@ -63,10 +73,55 @@
                 "target_audience": 100,
                 "audience_insight": {
                     "primary_segment": "Professionals",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {
+                        "Male": 55,
+                        "Female": 45
+                    },
+                    "age": {
+                        "18-24": 10,
+                        "25-34": 40,
+                        "35-44": 35,
+                        "45+": 15
+                    }
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "f84b709c-67f0-4f9e-b9ad-9278adc2a626": {
+            "name": "New Campaign",
+            "metrics": {
+                "impressions": 7650,
+                "clicks": 585,
+                "cost": 788.37,
+                "conversions": 106,
+                "ctr": 0.8,
+                "cpc": 1.58,
+                "cpm": 48.67,
+                "conversion_rate": 13.3,
+                "roi": 2.76,
+                "sentiment_score": 0.56,
+                "forecast_data": {
+                    "projected_roi": 3.1,
+                    "projected_conversions": 85,
+                    "confidence_score": "89%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 20000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Gamers",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
                     "Ad 2": "Testing"
                 }
             }

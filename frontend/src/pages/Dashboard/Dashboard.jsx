@@ -80,7 +80,7 @@ const Dashboard = () => {
                         className="btn-primary py-2.5"
                     >
                         <Plus className="w-5 h-5" />
-                        <span className="hidden sm:inline">New Campaign</span>
+                        <span className="hidden sm:inline">Initialize New Campaign</span>
                     </button>
                 </div>
             </header>

@@ -115,10 +115,34 @@ def get_campaign_metrics(campaign_id: str):
 
 from services.optimization_service import optimization_service
 
-@app.get("/api/platforms/{platform}/stats")
-def get_platform_stats(platform: str):
+@app.get("/api/platform-data/{platform}")
+def get_platform_data(platform: str):
     try:
-        return PlatformAPI.get_platform_aggregate_stats(platform)
+        import json
+        import os
+        
+        # Map platform names to file names
+        platform_files = {
+            "Facebook": "Facebook.json",
+            "Instagram": "Instagram.json", 
+            "Google Ads": "Google Ads.json",
+            "Email": "Email.json",
+            "Twitter": "Twitter.json",
+            "Social Media": "Social Media.json"
+        }
+        
+        filename = platform_files.get(platform)
+        if not filename:
+            raise HTTPException(status_code=404, detail=f"Platform {platform} not found")
+        
+        file_path = os.path.join("data", filename)
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail=f"Data file for {platform} not found")
+        
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        return data
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

@@ -28,7 +28,9 @@
                 "target_audience": 10000,
                 "audience_insight": {
                     "primary_segment": "Fashionistas",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {"Male": 40, "Female": 60},
+                    "age": {"18-24": 30, "25-34": 35, "35-44": 25, "45+": 10}
                 },
                 "detailed_stats": {
                     "Ad 1": "Learning",
@@ -63,7 +65,9 @@
                 "target_audience": 100,
                 "audience_insight": {
                     "primary_segment": "Gamers",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {"Male": 80, "Female": 20},
+                    "age": {"18-24": 50, "25-34": 30, "35-44": 15, "45+": 5}
                 },
                 "detailed_stats": {
                     "Ad 1": "Winner",

@@ -29,7 +29,9 @@
                 "audience_insight": {
                     "primary_segment": "At-Risk",
                     "top_region": "North America",
-                    "engagement_depth": "Low"
+                    "engagement_depth": "Low",
+                    "gender": {"Male": 50, "Female": 50},
+                    "age": {"18-24": 20, "25-34": 35, "35-44": 30, "45+": 15}
                 },
                 "detailed_stats": {
                     "Open Rate": "19%",
@@ -65,7 +67,9 @@
                 "audience_insight": {
                     "primary_segment": "High-Value",
                     "top_region": "North America",
-                    "engagement_depth": "High"
+                    "engagement_depth": "High",
+                    "gender": {"Male": 45, "Female": 55},
+                    "age": {"18-24": 15, "25-34": 40, "35-44": 30, "45+": 15}
                 },
                 "detailed_stats": {
                     "Open Rate": "21%",

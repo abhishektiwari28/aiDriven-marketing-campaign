@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, MoreVertical, TrendingUp, DollarSign, Loader2 } from 'lucide-react';
+import { Play, Pause, MoreVertical, TrendingUp, DollarSign, Loader2, ChevronDown, Calendar } from 'lucide-react';
 import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8000/api';
@@ -35,19 +35,61 @@ const CampaignRow = ({ name, status, budget, roi, progress }) => (
     </div>
 );
 
-const DashboardCampaigns = ({ selectedCampaign }) => {
+const DashboardCampaigns = ({ selectedCampaign, timeRange }) => {
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedTimeFilter, setSelectedTimeFilter] = useState('1');
+    const [allActivities, setAllActivities] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    // Time filter options
+    const timeFilters = [
+        { value: '1', label: 'Last 24 Hours' },
+        { value: '3', label: 'Last 3 Days' },
+        { value: '7', label: 'Last 7 Days' },
+        { value: '15', label: 'Last 15 Days' },
+        { value: '30', label: 'Last 30 Days' }
+    ];
+
+    // Filter activities based on selected time range
+    const filterActivitiesByTime = (activities, days) => {
+        const now = new Date();
+        const cutoffTime = new Date(now.getTime() - (parseInt(days) * 24 * 60 * 60 * 1000));
+        
+        return activities.filter(activity => {
+            const activityDate = new Date(activity.createdAt || activity.timeline?.start_date || now);
+            return activityDate >= cutoffTime;
+        });
+    };
 
     useEffect(() => {
         fetchData();
     }, [selectedCampaign]);
 
+    // Filter campaigns when time filter changes
+    useEffect(() => {
+        if (allActivities.length > 0) {
+            const filtered = filterActivitiesByTime(allActivities, selectedTimeFilter);
+            setCampaigns(filtered);
+        }
+    }, [selectedTimeFilter, allActivities]);
+
     const fetchData = async () => {
         setLoading(true);
         try {
             const response = await axios.get(`${API_BASE_URL}/dashboard/stats`, { params: { campaign_id: selectedCampaign } });
-            setCampaigns(response.data.campaign_summary || []);
+            const activities = response.data.campaign_summary || [];
+            
+            // Add mock timestamps if not present for demo
+            const activitiesWithTimestamps = activities.map(activity => ({
+                ...activity,
+                createdAt: activity.createdAt || new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString()
+            }));
+            
+            setAllActivities(activitiesWithTimestamps);
+            // Initial filter with selected time range
+            const filtered = filterActivitiesByTime(activitiesWithTimestamps, selectedTimeFilter);
+            setCampaigns(filtered);
         } catch (error) {
             console.error("Error fetching dashboard campaigns:", error);
         } finally {
@@ -66,26 +108,58 @@ const DashboardCampaigns = ({ selectedCampaign }) => {
 
     return (
         <div className="glass-card p-8 border border-slate-200 shadow-slate-200/50 animate-in fade-in slide-in-from-right-4 duration-500">
-            <div className="flex justify-between items-center mb-10">
+            <div className="flex justify-between items-center mb-8">
                 <div>
                     <h3 className="text-xl font-black text-slate-900 tracking-tight uppercase">Strategic Activity Grid</h3>
                     <p className="text-xs text-slate-500 font-medium mt-1">Real-time telemetry from active deployments</p>
                 </div>
-                <button className="text-indigo-600 text-[10px] font-black uppercase tracking-widest hover:underline transition-all">Command Library</button>
+                
+                {/* Time Filter Dropdown */}
+                <div className="relative">
+                    <button
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-slate-700 hover:border-slate-300 transition-all"
+                    >
+                        <Calendar className="w-4 h-4" />
+                        {timeFilters.find(f => f.value === selectedTimeFilter)?.label}
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 top-full mt-2 bg-white border border-slate-200 rounded-xl shadow-lg z-10 min-w-[160px]">
+                            {timeFilters.map(filter => (
+                                <button
+                                    key={filter.value}
+                                    onClick={() => {
+                                        setSelectedTimeFilter(filter.value);
+                                        setIsDropdownOpen(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-2 text-xs font-bold transition-all first:rounded-t-xl last:rounded-b-xl ${
+                                        selectedTimeFilter === filter.value
+                                            ? 'bg-indigo-50 text-indigo-600'
+                                            : 'text-slate-600 hover:bg-slate-50'
+                                    }`}
+                                >
+                                    {filter.label}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
+            
             <div className="space-y-4">
                 {campaigns.map((c, i) => (
                     <CampaignRow key={i} {...c} />
                 ))}
-                {campaigns.length === 0 && (
+                {campaigns.length === 0 && !loading && (
                     <div className="py-10 text-center border-2 border-dashed border-slate-100 rounded-3xl">
-                        <p className="text-slate-400 font-medium italic text-sm">No active sequences found.</p>
+                        <p className="text-slate-400 font-medium italic text-sm">
+                            No campaign activity found for this period
+                        </p>
                     </div>
                 )}
             </div>
-            <button className="w-full mt-10 py-4 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 font-bold hover:border-indigo-400/50 hover:text-indigo-600 hover:bg-indigo-50/10 transition-all flex items-center justify-center gap-2 group">
-                <span className="text-sm font-black uppercase tracking-widest">+ Initialize New Campaign Node</span>
-            </button>
         </div>
     );
 };
