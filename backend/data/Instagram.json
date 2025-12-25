@@ -220,6 +220,41 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "569d4889-100b-4a64-b3e6-3567b772f617": {
+            "name": "End of season sales",
+            "metrics": {
+                "impressions": 5331,
+                "clicks": 1139,
+                "cost": 655.75,
+                "conversions": 117,
+                "ctr": 1.98,
+                "cpc": 1.23,
+                "cpm": 75.86,
+                "conversion_rate": 5.86,
+                "roi": 2.96,
+                "sentiment_score": 0.87,
+                "forecast_data": {
+                    "projected_roi": 3.0,
+                    "projected_conversions": 205,
+                    "confidence_score": "83%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 70000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Learning",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }

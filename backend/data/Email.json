@@ -145,42 +145,6 @@
                 }
             }
         },
-        "e8031e92-43e3-48ef-9bda-b7ad923339b0": {
-            "name": "Offers",
-            "metrics": {
-                "impressions": 4121,
-                "clicks": 233,
-                "cost": 235.39,
-                "conversions": 48,
-                "ctr": 4.15,
-                "cpc": 1.54,
-                "cpm": 132.21,
-                "conversion_rate": 13.33,
-                "roi": 2.47,
-                "sentiment_score": 0.86,
-                "forecast_data": {
-                    "projected_roi": 4.0,
-                    "projected_conversions": 176,
-                    "confidence_score": "79%"
-                },
-                "schedule_data": {
-                    "duration_days": 30,
-                    "next_run": "",
-                    "frequency": "Daily"
-                },
-                "budget": 10000.0,
-                "target_audience": 10000,
-                "audience_insight": {
-                    "primary_segment": "New",
-                    "top_region": "Asia",
-                    "engagement_depth": "Low"
-                },
-                "detailed_stats": {
-                    "Open Rate": "30%",
-                    "Click Rate": "8%"
-                }
-            }
-        },
         "7e6d570e-8c03-43a0-8f2d-8a84a3cb7900": {
             "name": "New Camp",
             "metrics": {
@@ -250,6 +214,78 @@
                 "detailed_stats": {
                     "Open Rate": "29%",
                     "Click Rate": "6%"
+                }
+            }
+        },
+        "569d4889-100b-4a64-b3e6-3567b772f617": {
+            "name": "End of season sales",
+            "metrics": {
+                "impressions": 1386,
+                "clicks": 668,
+                "cost": 266.76,
+                "conversions": 40,
+                "ctr": 2.19,
+                "cpc": 0.77,
+                "cpm": 119.96,
+                "conversion_rate": 19.8,
+                "roi": 1.71,
+                "sentiment_score": 0.7,
+                "forecast_data": {
+                    "projected_roi": 2.3,
+                    "projected_conversions": 306,
+                    "confidence_score": "69%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 70000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "At-Risk",
+                    "top_region": "Global",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Open Rate": "23%",
+                    "Click Rate": "3%"
+                }
+            }
+        },
+        "76602ba2-f709-4693-a0d0-6a6c5337eb6b": {
+            "name": "Offers",
+            "metrics": {
+                "impressions": 4598,
+                "clicks": 474,
+                "cost": 312.66,
+                "conversions": 27,
+                "ctr": 4.5,
+                "cpc": 1.88,
+                "cpm": 58.57,
+                "conversion_rate": 8.21,
+                "roi": 1.54,
+                "sentiment_score": 0.68,
+                "forecast_data": {
+                    "projected_roi": 4.1,
+                    "projected_conversions": 369,
+                    "confidence_score": "76%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 50000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "At-Risk",
+                    "top_region": "North America",
+                    "engagement_depth": "Medium"
+                },
+                "detailed_stats": {
+                    "Open Rate": "34%",
+                    "Click Rate": "2%"
                 }
             }
         }

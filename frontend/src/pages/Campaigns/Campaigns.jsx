@@ -55,8 +55,8 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
                         }`}>
                             {campaign.status}
                         </span>
-                        <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight mb-1 leading-tight">{campaign.name}</h3>
-                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{campaign.platforms?.join(', ') || 'Omnichannel'} • {campaign.objective || 'Growth'}</p>
+                        <h3 className="text-xl font-black text-primary group-hover:text-indigo-600 transition-colors uppercase tracking-tight mb-1 leading-tight">{campaign.name}</h3>
+                        <p className="text-[10px] text-muted font-black uppercase tracking-widest">{campaign.platforms?.join(', ') || 'Omnichannel'} • {campaign.objective || 'Growth'}</p>
                     </div>
                     <div className="flex items-center gap-2 flex-shrink-0">
                         <button onClick={() => onEdit(campaign)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Edit Configuration">
@@ -71,18 +71,18 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
                 </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-1 py-4 border-y border-slate-100 mt-auto">
-                <div className="border-r border-slate-100 pr-2">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Forecast</p>
-                    <p className="font-black text-slate-800 tracking-tight">{campaign.roi_forecast?.projected_roi || '0.0'}x</p>
+            <div className="grid grid-cols-3 gap-1 py-4 border-y border-light mt-auto">
+                <div className="border-r border-light pr-2">
+                    <p className="text-[10px] text-muted uppercase font-black tracking-widest mb-1">Forecast</p>
+                    <p className="font-black text-secondary tracking-tight">{campaign.roi_forecast?.projected_roi || '0.0'}x</p>
                 </div>
-                <div className="border-r border-slate-100 px-2">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Conversions</p>
+                <div className="border-r border-light px-2">
+                    <p className="text-[10px] text-muted uppercase font-black tracking-widest mb-1">Conversions</p>
                     <p className="font-black text-emerald-600 tracking-tight">{campaign.roi_forecast?.projected_conversions || 0}</p>
                 </div>
                 <div className="pl-2">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Schedule</p>
-                    <p className="font-black text-slate-800 tracking-tight">{campaign.timeline?.duration_days || 30}d</p>
+                    <p className="text-[10px] text-muted uppercase font-black tracking-widest mb-1">Schedule</p>
+                    <p className="font-black text-secondary tracking-tight">{campaign.timeline?.duration_days || 30}d</p>
                 </div>
             </div>
 
@@ -216,8 +216,8 @@ const Campaigns = () => {
         <div className="space-y-10 animate-in fade-in duration-700">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">Campaign Grid</h1>
-                    <p className="text-slate-500 font-medium">Global management of autonomous marketing sequences.</p>
+                    <h1 className="text-4xl font-black text-primary tracking-tight mb-2">Campaign Grid</h1>
+                    <p className="text-muted font-medium">Global management of autonomous marketing sequences.</p>
                 </div>
                 <button
                     onClick={openCreateModal}
@@ -240,7 +240,7 @@ const Campaigns = () => {
                     <input
                         type="text"
                         placeholder="Search sequence identifiers..."
-                        className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-6 text-slate-900 text-sm font-medium focus:outline-none focus:border-indigo-500/50 shadow-sm transition-all"
+                        className="w-full bg-card border border-default rounded-2xl py-4 pl-12 pr-6 text-primary text-sm font-medium focus:outline-none focus:border-indigo-500/50 shadow-sm transition-all"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -248,7 +248,7 @@ const Campaigns = () => {
                 <div className="relative min-w-[200px]">
                     <Filter className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                     <select
-                        className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-10 text-slate-900 text-xs font-black uppercase tracking-widest focus:outline-none focus:border-indigo-500/50 shadow-sm transition-all appearance-none cursor-pointer"
+                        className="w-full bg-card border border-default rounded-2xl py-4 pl-12 pr-10 text-primary text-xs font-black uppercase tracking-widest focus:outline-none focus:border-indigo-500/50 shadow-sm transition-all appearance-none cursor-pointer"
                         value={filterStatus}
                         onChange={(e) => setFilterStatus(e.target.value)}
                     >
@@ -263,7 +263,7 @@ const Campaigns = () => {
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
-                    <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Synchronizing with Agentic Grid...</p>
+                    <p className="text-muted font-bold uppercase tracking-widest text-xs">Synchronizing with Agentic Grid...</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">

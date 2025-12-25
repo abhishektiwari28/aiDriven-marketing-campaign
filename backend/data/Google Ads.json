@@ -151,41 +151,6 @@
                 }
             }
         },
-        "e8031e92-43e3-48ef-9bda-b7ad923339b0": {
-            "name": "Offers",
-            "metrics": {
-                "impressions": 13885,
-                "clicks": 1129,
-                "cost": 351.25,
-                "conversions": 99,
-                "ctr": 1.05,
-                "cpc": 1.06,
-                "cpm": 55.37,
-                "conversion_rate": 7.23,
-                "roi": 3.75,
-                "sentiment_score": 0.89,
-                "forecast_data": {
-                    "projected_roi": 3.5,
-                    "projected_conversions": 100,
-                    "confidence_score": "78%"
-                },
-                "schedule_data": {
-                    "duration_days": 30,
-                    "next_run": "",
-                    "frequency": "Daily"
-                },
-                "budget": 10000.0,
-                "target_audience": 10000,
-                "audience_insight": {
-                    "primary_segment": "Professionals",
-                    "engagement_depth": "High"
-                },
-                "detailed_stats": {
-                    "Ad 1": "Winner",
-                    "Ad 2": "Testing"
-                }
-            }
-        },
         "7e6d570e-8c03-43a0-8f2d-8a84a3cb7900": {
             "name": "New Camp",
             "metrics": {
@@ -217,6 +182,41 @@
                 },
                 "detailed_stats": {
                     "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "569d4889-100b-4a64-b3e6-3567b772f617": {
+            "name": "End of season sales",
+            "metrics": {
+                "impressions": 18580,
+                "clicks": 231,
+                "cost": 289.05,
+                "conversions": 53,
+                "ctr": 3.46,
+                "cpc": 1.19,
+                "cpm": 45.76,
+                "conversion_rate": 18.49,
+                "roi": 3.33,
+                "sentiment_score": 0.64,
+                "forecast_data": {
+                    "projected_roi": 3.1,
+                    "projected_conversions": 98,
+                    "confidence_score": "92%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 70000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Professionals",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Winner",
                     "Ad 2": "Testing"
                 }
             }

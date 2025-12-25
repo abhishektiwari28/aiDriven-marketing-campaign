@@ -221,7 +221,7 @@ const DashboardAIInsights = ({ selectedCampaign, timeRange }) => {
         return (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
                 <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
-                <p className="text-slate-500 font-bold uppercase tracking-widest text-xs">Syncing with StrategyAgent Decision Logs...</p>
+                <p className="text-muted font-bold uppercase tracking-widest text-xs">Syncing with StrategyAgent Decision Logs...</p>
             </div>
         );
     }
@@ -240,19 +240,19 @@ const DashboardAIInsights = ({ selectedCampaign, timeRange }) => {
         // Always render the card structure - show fallback if no decision data
         if (!decision || !data) {
             return (
-                <div className={`p-8 rounded-[2rem] border-2 ${isCost ? 'border-rose-200 bg-rose-50/50' : 'border-emerald-200 bg-emerald-50/50'}`}>
-                    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isCost ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'} text-[10px] font-black uppercase tracking-widest mb-4`}>
+                <div className={`p-8 rounded-[2rem] border-2 ${isCost ? 'border-rose-200 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-900/20' : 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-900/20'}`}>
+                    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isCost ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400' : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'} text-[10px] font-black uppercase tracking-widest mb-4`}>
                         {isCost ? <ShieldAlert className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
                         {isCost ? 'Cost Reduction' : 'Results Optimization'}
                     </div>
                     <div className="text-center py-8">
-                        <div className={`w-12 h-12 rounded-full ${isCost ? 'bg-rose-100' : 'bg-emerald-100'} flex items-center justify-center mx-auto mb-4`}>
-                            {isCost ? <ShieldAlert className="w-6 h-6 text-rose-500" /> : <Zap className="w-6 h-6 text-emerald-500" />}
+                        <div className={`w-12 h-12 rounded-full ${isCost ? 'bg-rose-100 dark:bg-rose-900/30' : 'bg-emerald-100 dark:bg-emerald-900/30'} flex items-center justify-center mx-auto mb-4`}>
+                            {isCost ? <ShieldAlert className="w-6 h-6 text-rose-500 dark:text-rose-400" /> : <Zap className="w-6 h-6 text-emerald-500 dark:text-emerald-400" />}
                         </div>
-                        <p className="text-slate-600 font-medium">
+                        <p className="text-secondary font-medium">
                             No autonomous decision insights available for this campaign yet.
                         </p>
-                        <p className="text-slate-400 text-sm mt-2">
+                        <p className="text-muted text-sm mt-2">
                             StrategyAgent is analyzing campaign data...
                         </p>
                     </div>
@@ -261,43 +261,43 @@ const DashboardAIInsights = ({ selectedCampaign, timeRange }) => {
         }
 
         return (
-            <div className={`group relative p-8 rounded-[2rem] border-2 transition-all duration-500 hover:shadow-2xl ${isCost ? 'border-rose-200 bg-rose-50/50 hover:bg-rose-50 shadow-rose-200/20' : 'border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 shadow-emerald-200/20'}`}>
+            <div className={`group relative p-8 rounded-[2rem] border-2 transition-all duration-500 hover:shadow-2xl ${isCost ? 'border-rose-200 dark:border-rose-800 bg-rose-50/50 dark:bg-rose-900/20 hover:bg-rose-50 dark:hover:bg-rose-900/30 shadow-rose-200/20 dark:shadow-rose-900/20' : 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-900/20 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 shadow-emerald-200/20 dark:shadow-emerald-900/20'}`}>
                 <div className="flex justify-between items-start mb-8">
                     <div>
-                        <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isCost ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'} text-[10px] font-black uppercase tracking-widest mb-4`}>
+                        <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${isCost ? 'bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400' : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400'} text-[10px] font-black uppercase tracking-widest mb-4`}>
                             {isCost ? <ShieldAlert className="w-3 h-3" /> : <Zap className="w-3 h-3" />}
                             {data.decision_type}
                         </div>
-                        <h4 className="text-2xl font-black text-slate-800 tracking-tight leading-tight">
+                        <h4 className="text-2xl font-black text-secondary tracking-tight leading-tight">
                             {budget.action || 'Strategic Signal'}
                         </h4>
                     </div>
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter bg-white/80 px-3 py-1.5 rounded-xl border border-slate-100/50">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-tighter bg-white/80 dark:bg-gray-800/80 px-3 py-1.5 rounded-xl border border-light">
                         {decision.timestamp || 'Live Update'}
                     </span>
                 </div>
 
                 <div className="space-y-6">
-                    <div className="p-6 rounded-2xl bg-white/60 border border-white/80 backdrop-blur-sm">
-                        <p className="text-sm text-slate-600 leading-relaxed font-semibold italic">
+                    <div className="p-6 rounded-2xl bg-white/60 dark:bg-gray-800/60 border border-white/80 dark:border-gray-700/80 backdrop-blur-sm">
+                        <p className="text-sm text-secondary leading-relaxed font-semibold italic">
                             "{analysis.summary || 'Analyzing campaign performance and generating strategic recommendations...'}"
                         </p>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 rounded-2xl bg-white/40 border border-white/60">
-                            <p className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Winning Node</p>
-                            <p className={`text-sm font-bold ${isCost ? 'text-rose-600' : 'text-emerald-600'}`}>{analysis.winning_segment || 'Cross-Channel'}</p>
+                        <div className="p-4 rounded-2xl bg-white/40 dark:bg-gray-800/40 border border-white/60 dark:border-gray-700/60">
+                            <p className="text-[10px] font-black text-muted uppercase mb-1 tracking-widest">Winning Node</p>
+                            <p className={`text-sm font-bold ${isCost ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{analysis.winning_segment || 'Cross-Channel'}</p>
                         </div>
-                        <div className="p-4 rounded-2xl bg-white/40 border border-white/60">
-                            <p className="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-widest">Sentiment Lead</p>
-                            <p className="text-sm font-bold text-slate-700">{analysis.sentiment_leader || 'Aggregated'}</p>
+                        <div className="p-4 rounded-2xl bg-white/40 dark:bg-gray-800/40 border border-white/60 dark:border-gray-700/60">
+                            <p className="text-[10px] font-black text-muted uppercase mb-1 tracking-widest">Sentiment Lead</p>
+                            <p className="text-sm font-bold text-secondary">{analysis.sentiment_leader || 'Aggregated'}</p>
                         </div>
                     </div>
                 </div>
 
-                <div className={`mt-8 pt-6 border-t ${isCost ? 'border-rose-100' : 'border-emerald-100'} flex items-center justify-between`}>
-                    <span className={`text-[11px] font-black ${isCost ? 'text-rose-500' : 'text-emerald-500'} uppercase tracking-tight`}>
+                <div className={`mt-8 pt-6 border-t ${isCost ? 'border-rose-100 dark:border-rose-800' : 'border-emerald-100 dark:border-emerald-800'} flex items-center justify-between`}>
+                    <span className={`text-[11px] font-black ${isCost ? 'text-rose-500 dark:text-rose-400' : 'text-emerald-500 dark:text-emerald-400'} uppercase tracking-tight`}>
                         Autonomous Precision: 98.4%
                     </span>
                     <ArrowRight className={`w-5 h-5 ${isCost ? 'text-rose-400' : 'text-emerald-400'} group-hover:translate-x-1 transition-transform`} />
@@ -310,18 +310,18 @@ const DashboardAIInsights = ({ selectedCampaign, timeRange }) => {
         <div className="space-y-10 animate-in zoom-in-95 duration-500">
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 px-4">
                 <div>
-                    <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-                        <Zap className="w-8 h-8 text-indigo-600 fill-indigo-100" />
+                    <h2 className="text-3xl font-black text-primary tracking-tight flex items-center gap-3">
+                        <Zap className="w-8 h-8 text-indigo-600 fill-indigo-100 dark:fill-indigo-900" />
                         Autonomous Decisions
-                        <span className="text-sm font-medium text-slate-400 ml-2 tracking-normal bg-slate-100 px-3 py-1 rounded-full">(AI Strategic Signals)</span>
+                        <span className="text-sm font-medium text-muted ml-2 tracking-normal bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">(AI Strategic Signals)</span>
                     </h2>
-                    <p className="text-slate-500 mt-2 font-medium">Real-time tactical pivots orchestrated by the <strong>StrategyAgent</strong>.</p>
+                    <p className="text-muted mt-2 font-medium">Real-time tactical pivots orchestrated by the <strong>StrategyAgent</strong>.</p>
                 </div>
 
                 <button
                     onClick={() => setIsDeepAnalyticsOpen(true)}
                     disabled={isOptimizing}
-                    className="group relative px-8 py-4 rounded-2xl bg-slate-900 hover:bg-black text-white font-bold text-sm transition-all shadow-2xl active:scale-95 flex items-center gap-3 overflow-hidden"
+                    className="group relative px-8 py-4 rounded-2xl bg-gray-900 dark:bg-gray-800 hover:bg-black dark:hover:bg-gray-700 text-white font-bold text-sm transition-all shadow-2xl active:scale-95 flex items-center gap-3 overflow-hidden"
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                     {isOptimizing ? <Loader2 className="w-5 h-5 animate-spin" /> : <TrendingUp className="w-5 h-5 text-emerald-400" />}
@@ -334,26 +334,26 @@ const DashboardAIInsights = ({ selectedCampaign, timeRange }) => {
                 {renderDecisionCard(resultsOptimization, 'Results')}
             </div>
 
-            <div className="glass-card p-10 border border-slate-200/60 overflow-hidden relative group">
-                <div className="absolute -right-20 -top-20 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-50 group-hover:scale-110 transition-transform duration-700" />
+            <div className="glass-card p-10 border border-default overflow-hidden relative group">
+                <div className="absolute -right-20 -top-20 w-64 h-64 bg-indigo-50 dark:bg-indigo-900/30 rounded-full blur-3xl opacity-50 group-hover:scale-110 transition-transform duration-700" />
 
-                <h3 className="text-lg font-black text-slate-900 mb-8 uppercase tracking-widest flex items-center gap-3">
-                    <Target className="w-5 h-5 text-indigo-500" />
+                <h3 className="text-lg font-black text-primary mb-8 uppercase tracking-widest flex items-center gap-3">
+                    <Target className="w-5 h-5 text-indigo-500 dark:text-indigo-400" />
                     Agent Forecast Engine
                 </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
                     <div className="space-y-2">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Projected Conversions</p>
-                        <p className="text-4xl font-black text-slate-900 tabular-nums">1,284 <span className="text-sm text-emerald-500">+12%</span></p>
+                        <p className="text-[10px] font-black text-muted uppercase tracking-widest">Projected Conversions</p>
+                        <p className="text-4xl font-black metric-number tabular-nums">1,284 <span className="text-sm text-emerald-500">+12%</span></p>
                     </div>
-                    <div className="space-y-2 border-l border-slate-100 pl-8">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Expected ROI Delta</p>
-                        <p className="text-4xl font-black text-slate-900 tabular-nums">4.82x <span className="text-sm text-indigo-500">+0.4x</span></p>
+                    <div className="space-y-2 border-l border-light pl-8">
+                        <p className="text-[10px] font-black text-muted uppercase tracking-widest">Expected ROI Delta</p>
+                        <p className="text-4xl font-black metric-number tabular-nums">4.82x <span className="text-sm text-indigo-500">+0.4x</span></p>
                     </div>
-                    <div className="space-y-2 border-l border-slate-100 pl-8">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Confidence Interval</p>
-                        <p className="text-4xl font-black text-slate-900 tabular-nums">96.8%</p>
+                    <div className="space-y-2 border-l border-light pl-8">
+                        <p className="text-[10px] font-black text-muted uppercase tracking-widest">Confidence Interval</p>
+                        <p className="text-4xl font-black metric-number tabular-nums">96.8%</p>
                     </div>
                 </div>
             </div>

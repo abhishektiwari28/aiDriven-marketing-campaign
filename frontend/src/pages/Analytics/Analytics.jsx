@@ -33,19 +33,19 @@ const Analytics = () => {
             <div className="flex flex-col gap-8">
                 <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
                     <div>
-                        <h1 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">Intelligence Hub</h1>
-                        <p className="text-slate-500 font-medium max-w-md">Deep-dive into cross-channel attribution and persona dynamics</p>
+                        <h1 className="text-4xl font-black text-primary mb-2 tracking-tight">Intelligence Hub</h1>
+                        <p className="text-muted font-medium max-w-md">Deep-dive into cross-channel attribution and persona dynamics</p>
                     </div>
 
                     <div className="flex flex-wrap items-center gap-3">
                         {/* Global Selectors */}
-                        <div className="flex items-center bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm shadow-slate-200/50">
-                            <div className="relative group border-r border-slate-100 px-2">
-                                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                        <div className="flex items-center bg-card p-1.5 rounded-2xl border border-default shadow-sm shadow-gray-200/50 dark:shadow-black/10">
+                            <div className="relative group border-r border-light px-2">
+                                <Filter className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted group-hover:text-indigo-600 transition-colors" />
                                 <select
                                     value={selectedCampaign}
                                     onChange={(e) => setSelectedCampaign(e.target.value)}
-                                    className="bg-transparent rounded-xl py-2 pl-8 pr-8 text-[11px] font-black uppercase tracking-widest text-slate-600 focus:outline-none transition-all appearance-none cursor-pointer min-w-[200px]"
+                                    className="bg-transparent rounded-xl py-2 pl-8 pr-8 text-[11px] font-black uppercase tracking-widest text-secondary focus:outline-none transition-all appearance-none cursor-pointer min-w-[200px]"
                                 >
                                     {campaigns.map(c => (
                                         <option key={c.id} value={c.id}>{c.name}</option>
@@ -53,11 +53,11 @@ const Analytics = () => {
                                 </select>
                             </div>
                             <div className="relative group px-2">
-                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted group-hover:text-indigo-600 transition-colors" />
                                 <select
                                     value={timeRange}
                                     onChange={(e) => setTimeRange(e.target.value)}
-                                    className="bg-transparent rounded-xl py-2 pl-8 pr-8 text-[11px] font-black uppercase tracking-widest text-slate-600 focus:outline-none transition-all appearance-none cursor-pointer"
+                                    className="bg-transparent rounded-xl py-2 pl-8 pr-8 text-[11px] font-black uppercase tracking-widest text-secondary focus:outline-none transition-all appearance-none cursor-pointer"
                                 >
                                     <option value="7">Last 7D</option>
                                     <option value="30">Last 30D</option>
@@ -69,7 +69,7 @@ const Analytics = () => {
                 </div>
 
                 {/* Sub-Navigation Tabs */}
-                <div className="flex flex-wrap items-center gap-2 p-1 bg-slate-100/50 rounded-2xl border border-slate-200/60 w-fit max-w-full">
+                <div className="flex flex-wrap items-center gap-2 p-1 bg-gray-100/50 dark:bg-gray-800/50 rounded-2xl border border-default w-fit max-w-full">
                     {[
                         { id: 'overview', icon: BarChart3, label: 'Performance Overview' },
                         { id: 'funnel', icon: GitBranch, label: 'Deployment Funnel' },
@@ -80,11 +80,11 @@ const Analytics = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2.5 px-6 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${activeTab === tab.id
-                                ? 'bg-white text-indigo-600 shadow-md shadow-slate-200/50 scale-[1.02] border border-slate-100'
-                                : 'text-slate-400 hover:text-slate-600 hover:bg-white/50'
+                                ? 'bg-card text-indigo-600 shadow-md shadow-gray-200/50 dark:shadow-black/20 scale-[1.02] border border-light'
+                                : 'text-muted hover:text-secondary hover:bg-white/50 dark:hover:bg-gray-700/50'
                                 }`}
                         >
-                            <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? 'text-indigo-600' : 'text-slate-400'}`} />
+                            <tab.icon className={`w-3.5 h-3.5 ${activeTab === tab.id ? 'text-indigo-600' : 'text-muted'}`} />
                             {tab.label}
                         </button>
                     ))}
