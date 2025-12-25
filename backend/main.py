@@ -146,6 +146,14 @@ def get_platform_data(platform: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/platforms/{platform}/stats")
+def get_platform_stats(platform: str):
+    """Get aggregated stats for a specific platform from all campaigns"""
+    try:
+        return PlatformAPI.get_platform_aggregate_stats(platform)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.post("/api/campaigns/{campaign_id}/optimize")
 def optimize_campaign(campaign_id: str, platform: Optional[str] = None):
     try:
@@ -283,6 +291,28 @@ async def get_dashboard_trends(campaign_id: Optional[str] = None, days: int = 30
 @app.get("/api/dashboard/revenue-trajectory")
 async def get_dashboard_revenue_trajectory(campaign_id: Optional[str] = None, days: int = 30):
     return dashboard_service.get_revenue_trajectory(campaign_id, days)
+
+@app.get("/api/platforms/all/stats")
+def get_all_platforms_stats():
+    """Get aggregated stats for all platforms"""
+    try:
+        platforms = ["Instagram", "Facebook", "Twitter", "Google Ads", "Email"]
+        all_stats = []
+        
+        for platform in platforms:
+            try:
+                stats = PlatformAPI.get_platform_aggregate_stats(platform)
+                print(f"Stats for {platform}: {stats}")
+                all_stats.append(stats)
+            except Exception as e:
+                print(f"Error getting stats for {platform}: {e}")
+                continue
+        
+        print(f"Final all_stats: {all_stats}")
+        return all_stats
+    except Exception as e:
+        print(f"Error in get_all_platforms_stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 

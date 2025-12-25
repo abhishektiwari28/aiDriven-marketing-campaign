@@ -42,50 +42,52 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
     const buttonConfig = getButtonConfig();
 
     return (
-        <div className="glass-card p-6 flex flex-col gap-6 group hover:border-indigo-400/50 transition-all duration-300 shadow-sm hover:shadow-lg">
-            <div className="flex justify-between items-start">
-                <div>
-                    <span className={`text-[10px] font-black px-3 py-1.5 rounded-lg border mb-3 inline-block uppercase tracking-widest ${
-                        campaign.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
-                        campaign.status === 'Paused' ? 'bg-amber-50 text-amber-700 border-amber-100' :
-                        campaign.status === 'Draft' ? 'bg-blue-50 text-blue-700 border-blue-100' :
-                        'bg-slate-50 text-slate-500 border-slate-200'
-                    }`}>
-                        {campaign.status}
-                    </span>
-                    <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{campaign.name}</h3>
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-1">{campaign.platforms?.join(', ') || 'Omnichannel'} • {campaign.objective || 'Growth'}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                    <button onClick={() => onEdit(campaign)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Edit Configuration">
-                        <TrendingUp className="w-4 h-4" />
-                    </button>
-                    {campaign.broadcast_log && (
-                        <div className="bg-indigo-50 text-indigo-600 p-2 rounded-lg" title="Broadcast Live">
-                            <Share2 className="w-4 h-4" />
-                        </div>
-                    )}
+        <div className="glass-card p-6 flex flex-col h-full group hover:border-indigo-400/50 transition-all duration-300 shadow-sm hover:shadow-lg">
+            <div className="flex flex-col gap-4 flex-grow">
+                <div className="flex justify-between items-start">
+                    <div className="flex-1 pr-2">
+                        <span className={`text-[10px] font-black px-3 py-1.5 rounded-lg border mb-2 inline-block uppercase tracking-widest ${
+                            campaign.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border-emerald-100' :
+                            campaign.status === 'Paused' ? 'bg-amber-50 text-amber-700 border-amber-100' :
+                            campaign.status === 'Draft' ? 'bg-blue-50 text-blue-700 border-blue-100' :
+                            'bg-slate-50 text-slate-500 border-slate-200'
+                        }`}>
+                            {campaign.status}
+                        </span>
+                        <h3 className="text-xl font-black text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight mb-1 leading-tight">{campaign.name}</h3>
+                        <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest">{campaign.platforms?.join(', ') || 'Omnichannel'} • {campaign.objective || 'Growth'}</p>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                        <button onClick={() => onEdit(campaign)} className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Edit Configuration">
+                            <TrendingUp className="w-4 h-4" />
+                        </button>
+                        {campaign.broadcast_log && (
+                            <div className="bg-indigo-50 text-indigo-600 p-2 rounded-lg" title="Broadcast Live">
+                                <Share2 className="w-4 h-4" />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-1 py-5 border-y border-slate-100">
-                <div className="border-r border-slate-100">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1.5">Forecast</p>
+            <div className="grid grid-cols-3 gap-1 py-4 border-y border-slate-100 mt-auto">
+                <div className="border-r border-slate-100 pr-2">
+                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Forecast</p>
                     <p className="font-black text-slate-800 tracking-tight">{campaign.roi_forecast?.projected_roi || '0.0'}x</p>
                 </div>
                 <div className="border-r border-slate-100 px-2">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1.5">Conversions</p>
+                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Conversions</p>
                     <p className="font-black text-emerald-600 tracking-tight">{campaign.roi_forecast?.projected_conversions || 0}</p>
                 </div>
-                <div className="px-2">
-                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1.5">Schedule</p>
+                <div className="pl-2">
+                    <p className="text-[10px] text-slate-400 uppercase font-black tracking-widest mb-1">Schedule</p>
                     <p className="font-black text-slate-800 tracking-tight">{campaign.timeline?.duration_days || 30}d</p>
                 </div>
             </div>
 
-            <div className="flex gap-4 mt-2">
+            <div className="flex gap-4 mt-4">
                 <button
-                    className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 ${buttonConfig.className}`}
+                    className={`flex-1 py-3 text-[10px] font-black uppercase tracking-widest transition-all shadow-md flex items-center justify-center gap-2 rounded-xl ${buttonConfig.className}`}
                     onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -97,7 +99,7 @@ const CampaignCard = ({ campaign, onAction, onViewDetail, onEdit }) => {
                 </button>
                 <button
                     onClick={() => onViewDetail(campaign)}
-                    className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-100 transition-all shadow-sm"
+                    className="px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-100 transition-all shadow-sm flex-shrink-0"
                 >
                     <MoreVertical className="w-4 h-4" />
                 </button>
@@ -259,13 +261,14 @@ const Campaigns = () => {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-10">
                     {filteredCampaigns.map(campaign => (
-                        <CampaignCard
-                            key={campaign.id}
-                            campaign={campaign}
-                            onAction={handleAction}
-                            onViewDetail={setSelectedCampaign}
-                            onEdit={openEditModal}
-                        />
+                        <div key={campaign.id} className="h-80">
+                            <CampaignCard
+                                campaign={campaign}
+                                onAction={handleAction}
+                                onViewDetail={setSelectedCampaign}
+                                onEdit={openEditModal}
+                            />
+                        </div>
                     ))}
                     {filteredCampaigns.length === 0 && (
                         <div className="col-span-full py-20 text-center glass-card border-dashed border-2 border-slate-200">
