@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, Filter, Play, Pause, MoreVertical, TrendingUp, Plus, X, Share2, Loader2, CheckCircle, Clock, ShieldCheck, PenTool } from 'lucide-react';
 import axios from 'axios';
 import CreateCampaignModal from '../../components/CreateCampaignModal';
+import { useNotifications } from '../../context/NotificationContext';
 
 const API_BASE_URL = '/api';
 
@@ -116,6 +117,7 @@ const Campaigns = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCampaign, setSelectedCampaign] = useState(null);
     const [initialModalData, setInitialModalData] = useState(null);
+    const { triggerPlatformCheck } = useNotifications();
 
     useEffect(() => {
         fetchCampaigns();
@@ -151,6 +153,8 @@ const Campaigns = () => {
             // Create Logic - data is the new campaign
             setCampaigns([data, ...campaigns]);
         }
+        // Trigger platform check for notifications
+        triggerPlatformCheck();
     };
 
     const handleAction = async (id, action) => {
@@ -189,6 +193,9 @@ const Campaigns = () => {
                 action: action, 
                 status: newStatus 
             });
+
+            // Trigger platform check for notifications
+            triggerPlatformCheck();
 
         } catch (error) {
             console.error(`Error performing ${action}:`, error);

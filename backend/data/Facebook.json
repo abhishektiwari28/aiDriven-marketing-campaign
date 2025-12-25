@@ -129,6 +129,41 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "4bde3d89-573b-4d50-a53e-b9ebf617c58f": {
+            "name": "New Offers Camp",
+            "metrics": {
+                "impressions": 5582,
+                "clicks": 261,
+                "cost": 839.05,
+                "conversions": 101,
+                "ctr": 3.4,
+                "cpc": 1.58,
+                "cpm": 26.66,
+                "conversion_rate": 9.16,
+                "roi": 3.69,
+                "sentiment_score": 0.59,
+                "forecast_data": {
+                    "projected_roi": 1.8,
+                    "projected_conversions": 131,
+                    "confidence_score": "83%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 50000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Tech Enthusiasts",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }

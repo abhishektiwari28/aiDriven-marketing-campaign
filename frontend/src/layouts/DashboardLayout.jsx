@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import {
     LayoutDashboard,
     Megaphone,
@@ -10,10 +11,14 @@ import {
     Sparkles,
     Settings,
     Bell,
-    LogOut
+    LogOut,
+    Sun,
+    Moon
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useAuth } from '../context/AuthContext';
+import { useNotifications } from '../context/NotificationContext';
+import axios from 'axios';
 
 const NavItem = ({ to, label }) => (
     <NavLink
@@ -35,6 +40,18 @@ const DashboardLayout = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { user, logout } = useAuth();
+    const { notifications, clearNotifications } = useNotifications();
+    const [showNotifications, setShowNotifications] = useState(false);
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+    useEffect(() => {
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        localStorage.setItem('theme', theme);
+    }, [theme]);
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light');
+    };
 
     const handleLogout = () => {
         logout();
@@ -42,7 +59,7 @@ const DashboardLayout = () => {
     };
 
     return (
-        <div className="min-h-screen w-full bg-slate-50 text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
+        <div className={`min-h-screen w-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white font-sans selection:bg-indigo-100 selection:text-indigo-900 transition-colors duration-200`}>
             {/* Top Navigation Bar */}
             <header className="sticky top-0 z-50 w-full bg-white/70 backdrop-blur-xl border-b border-slate-200 overflow-hidden">
                 <div className="flex h-20 items-center px-4 lg:px-6 gap-3 lg:gap-4 max-w-[1600px] mx-auto">
@@ -66,9 +83,68 @@ const DashboardLayout = () => {
 
                     <div className="ml-auto flex items-center gap-2 xl:gap-6">
                         <div className="flex items-center gap-2">
-                            <button className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all border border-transparent hover:border-slate-200">
-                                <Bell className="w-5 h-5" />
+                            {/* Notifications */}
+                            <div className="relative">
+                                <button 
+                                    onClick={() => setShowNotifications(!showNotifications)}
+                                    className="relative p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                                >
+                                    <Bell className="w-5 h-5" />
+                                    {notifications.length > 0 && (
+                                        <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center font-bold">
+                                            {notifications.length}
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                            
+                            {/* Notification Popup Portal */}
+                            {showNotifications && createPortal(
+                                <div className="fixed inset-0 z-[99999]" onClick={() => setShowNotifications(false)}>
+                                    <div 
+                                        className="absolute top-20 right-6 w-80 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+                                            <h3 className="font-semibold text-slate-900 dark:text-white">Notifications</h3>
+                                            {notifications.length > 0 && (
+                                                <button onClick={clearNotifications} className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200">
+                                                    Clear all
+                                                </button>
+                                            )}
+                                        </div>
+                                        <div className="max-h-64 overflow-y-auto">
+                                            {notifications.length === 0 ? (
+                                                <div className="p-4 text-center text-slate-500 dark:text-slate-400 text-sm">
+                                                    No new notifications
+                                                </div>
+                                            ) : (
+                                                notifications.map(notification => (
+                                                    <div key={notification.id} className="p-4 border-b border-slate-100 dark:border-slate-700 last:border-b-0">
+                                                        <p className="text-sm text-slate-900 dark:text-white font-medium">{notification.message}</p>
+                                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{notification.timestamp}</p>
+                                                    </div>
+                                                ))
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>,
+                                document.body
+                            )}
+                            
+                            {/* Theme Toggle */}
+                            <button
+                                onClick={toggleTheme}
+                                className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all border border-transparent hover:border-slate-200 dark:hover:border-slate-700"
+                                title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+                            >
+                                {theme === 'light' ? (
+                                    <Moon className="w-5 h-5" />
+                                ) : (
+                                    <Sun className="w-5 h-5" />
+                                )}
                             </button>
+                            
                             <button
                                 onClick={handleLogout}
                                 className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition-all border border-transparent hover:border-rose-100 group"

@@ -79,6 +79,13 @@ const AIMarketing = () => {
                 };
             });
             
+            // Sort platforms by total (clicks + impressions + conversions) descending
+            chartData.sort((a, b) => {
+                const totalA = a.clicks + a.impressions + a.conversions;
+                const totalB = b.clicks + b.impressions + b.conversions;
+                return totalB - totalA;
+            });
+            
             console.log('Transformed chart data:', chartData);
             
             // Filter out platforms with no meaningful data
@@ -91,9 +98,9 @@ const AIMarketing = () => {
             // Calculate best platform based on composite score
             if (chartData.length > 0) {
                 const best = chartData.reduce((prev, current) => {
-                    const prevScore = (prev.roiIndex * 0.4) + (prev.conversions / 100 * 0.3) + (prev.reach / 1000 * 0.2) - (prev.spend / 1000 * 0.1);
-                    const currentScore = (current.roiIndex * 0.4) + (current.conversions / 100 * 0.3) + (current.reach / 1000 * 0.2) - (current.spend / 1000 * 0.1);
-                    return currentScore > prevScore ? current : prev;
+                    const prevTotal = prev.clicks + prev.impressions + prev.conversions;
+                    const currentTotal = current.clicks + current.impressions + current.conversions;
+                    return currentTotal > prevTotal ? current : prev;
                 });
                 setBestPlatform(best);
             }
@@ -143,94 +150,170 @@ const AIMarketing = () => {
             </header>
 
             {/* Platform Performance Chart */}
-            <div className="glass-card p-8 border border-slate-200 bg-white/80 backdrop-blur-sm">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="p-3 bg-indigo-50 rounded-2xl mb-4">
-                        <BarChart2 className="w-8 h-8 text-indigo-600" />
-                    </div>
-                    <h2 className="text-2xl font-black text-slate-900 mb-2">Platform Performance Metrics</h2>
-                    <p className="text-slate-500 text-sm font-medium">Clicks, Impressions, and Conversions by platform</p>
-                </div>
-                
-                {loading ? (
-                    <div className="h-96 flex items-center justify-center">
-                        <div className="text-slate-500 flex items-center gap-2">
-                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
-                            Loading platform data...
+            <div className="glass-card border border-slate-200 bg-white/95 backdrop-blur-sm shadow-2xl overflow-hidden">
+                {/* Chart Header */}
+                <div className="bg-gradient-to-r from-slate-50 to-slate-100 px-8 py-6 border-b border-slate-200">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-xl shadow-lg">
+                                <BarChart2 className="w-7 h-7 text-white" />
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Platform Performance Analytics</h2>
+                                <p className="text-slate-600 text-sm font-medium mt-1">Comprehensive metrics across all marketing channels</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <div className="text-xs text-slate-500 font-medium uppercase tracking-wider">Total Platforms</div>
+                            <div className="text-2xl font-bold text-slate-900">{platformData.length}</div>
                         </div>
                     </div>
-                ) : platformData.length > 0 ? (
-                    <div className="h-96 w-full bg-slate-50/50 rounded-xl p-4">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <BarChart 
-                                data={platformData} 
-                                layout="horizontal" 
-                                margin={{ left: 80, right: 120, top: 20, bottom: 40 }}
+                </div>
+
+                {/* Chart Content */}
+                <div className="p-8">
+                    {loading ? (
+                        <div className="h-[600px] flex items-center justify-center">
+                            <div className="text-slate-500 flex items-center gap-3">
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-3 border-indigo-600"></div>
+                                <span className="text-lg font-medium">Loading platform data...</span>
+                            </div>
+                        </div>
+                    ) : platformData.length > 0 ? (
+                        <div className="space-y-6">
+                            {/* Chart Metrics Summary */}
+                            <div className="grid grid-cols-3 gap-4 mb-6">
+                                <div className="bg-blue-50 rounded-lg p-4 border border-blue-100">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-3 h-3 bg-gradient-to-b from-blue-400 to-blue-600 rounded"></div>
+                                        <span className="text-sm font-semibold text-blue-900">Total Clicks</span>
+                                    </div>
+                                    <div className="text-2xl font-bold text-blue-900">
+                                        {platformData.reduce((sum, p) => sum + p.clicks, 0).toLocaleString()}
+                                    </div>
+                                </div>
+                                <div className="bg-orange-50 rounded-lg p-4 border border-orange-100">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-3 h-3 bg-gradient-to-b from-orange-400 to-orange-600 rounded"></div>
+                                        <span className="text-sm font-semibold text-orange-900">Total Impressions</span>
+                                    </div>
+                                    <div className="text-2xl font-bold text-orange-900">
+                                        {platformData.reduce((sum, p) => sum + p.impressions, 0).toLocaleString()}
+                                    </div>
+                                </div>
+                                <div className="bg-green-50 rounded-lg p-4 border border-green-100">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <div className="w-3 h-3 bg-gradient-to-b from-green-400 to-green-600 rounded"></div>
+                                        <span className="text-sm font-semibold text-green-900">Total Conversions</span>
+                                    </div>
+                                    <div className="text-2xl font-bold text-green-900">
+                                        {platformData.reduce((sum, p) => sum + p.conversions, 0).toLocaleString()}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Chart Container */}
+                            <div className="h-[600px] w-full bg-gradient-to-br from-slate-50/80 to-white rounded-xl border border-slate-200 shadow-inner">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart 
+                                        data={platformData} 
+                                        margin={{ left: 60, right: 60, top: 40, bottom: 100 }}
+                                        barCategoryGap={30}
+                                    >
+                                        <XAxis 
+                                            dataKey="platform" 
+                                            tick={{ fontSize: 13, fontWeight: '700', fill: '#334155', angle: -45, textAnchor: 'end' }}
+                                            axisLine={{ stroke: '#cbd5e1', strokeWidth: 2 }}
+                                            tickLine={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+                                            height={80}
+                                            interval={0}
+                                        />
+                                        <YAxis 
+                                            tick={{ fontSize: 12, fontWeight: '600', fill: '#64748b' }}
+                                            axisLine={{ stroke: '#cbd5e1', strokeWidth: 2 }}
+                                            tickLine={{ stroke: '#cbd5e1', strokeWidth: 1 }}
+                                            allowDecimals={false}
+                                            domain={[0, 'dataMax + 1000']}
+                                            tickFormatter={(value) => value > 1000 ? `${(value/1000).toFixed(0)}K` : value}
+                                        />
+                                        <Tooltip 
+                                            contentStyle={{ 
+                                                backgroundColor: 'rgba(255, 255, 255, 0.98)', 
+                                                border: '1px solid #e2e8f0', 
+                                                borderRadius: '12px',
+                                                boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                                                fontSize: '13px',
+                                                fontWeight: '600',
+                                                backdropFilter: 'blur(8px)'
+                                            }}
+                                            labelStyle={{ color: '#1e293b', fontWeight: '700', fontSize: '14px', marginBottom: '8px' }}
+                                            formatter={(value, name) => [
+                                                <span style={{ color: name === 'Clicks' ? '#3b82f6' : name === 'Impressions' ? '#f97316' : '#22c55e' }}>
+                                                    {value.toLocaleString()}
+                                                </span>, 
+                                                name
+                                            ]}
+                                        />
+                                        <Legend 
+                                            wrapperStyle={{ 
+                                                paddingTop: '30px',
+                                                fontSize: '13px',
+                                                fontWeight: '600'
+                                            }}
+                                            iconType="rect"
+                                            iconSize={12}
+                                        />
+                                        <Bar 
+                                            dataKey="clicks" 
+                                            fill="url(#clicksGradient)" 
+                                            name="Clicks"
+                                            radius={[4, 4, 0, 0]}
+                                            minPointSize={8}
+                                        />
+                                        <Bar 
+                                            dataKey="impressions" 
+                                            fill="url(#impressionsGradient)" 
+                                            name="Impressions"
+                                            radius={[4, 4, 0, 0]}
+                                            minPointSize={8}
+                                        />
+                                        <Bar 
+                                            dataKey="conversions" 
+                                            fill="url(#conversionsGradient)" 
+                                            name="Conversions"
+                                            radius={[4, 4, 0, 0]}
+                                            minPointSize={8}
+                                        />
+                                        <defs>
+                                            <linearGradient id="clicksGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor="#3b82f6" stopOpacity={1}/>
+                                                <stop offset="100%" stopColor="#1e40af" stopOpacity={0.8}/>
+                                            </linearGradient>
+                                            <linearGradient id="impressionsGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor="#f97316" stopOpacity={1}/>
+                                                <stop offset="100%" stopColor="#ea580c" stopOpacity={0.8}/>
+                                            </linearGradient>
+                                            <linearGradient id="conversionsGradient" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stopColor="#22c55e" stopOpacity={1}/>
+                                                <stop offset="100%" stopColor="#16a34a" stopOpacity={0.8}/>
+                                            </linearGradient>
+                                        </defs>
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="h-96 flex flex-col items-center justify-center gap-4">
+                            <div className="text-slate-400 text-lg">No platform data available</div>
+                            <button 
+                                onClick={fetchPlatformData}
+                                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
                             >
-                                <XAxis 
-                                    type="number" 
-                                    tick={{ fontSize: 10, fontWeight: '600', fill: '#64748b' }}
-                                    axisLine={{ stroke: '#cbd5e1', strokeWidth: 1 }}
-                                    tickLine={{ stroke: '#cbd5e1' }}
-                                    allowDecimals={false}
-                                />
-                                <YAxis 
-                                    dataKey="platform" 
-                                    type="category" 
-                                    tick={{ fontSize: 11, fontWeight: '700', fill: '#334155' }} 
-                                    width={70}
-                                    axisLine={{ stroke: '#cbd5e1', strokeWidth: 1 }}
-                                    tickLine={false}
-                                />
-                                <Tooltip 
-                                    contentStyle={{ 
-                                        backgroundColor: '#fff', 
-                                        border: '1px solid #e2e8f0', 
-                                        borderRadius: '8px',
-                                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
-                                        fontSize: '12px',
-                                        fontWeight: '600'
-                                    }}
-                                    labelStyle={{ color: '#1e293b', fontWeight: '700' }}
-                                    formatter={formatTooltipValue}
-                                />
-                                <Legend 
-                                    wrapperStyle={{ 
-                                        paddingTop: '15px',
-                                        fontSize: '11px',
-                                        fontWeight: '600'
-                                    }}
-                                    iconType="rect"
-                                />
-                                <Bar 
-                                    dataKey="clicks" 
-                                    fill="#EF4444" 
-                                    name="Clicks"
-                                />
-                                <Bar 
-                                    dataKey="impressions" 
-                                    fill="#3B82F6" 
-                                    name="Impressions"
-                                />
-                                <Bar 
-                                    dataKey="conversions" 
-                                    fill="#10B981" 
-                                    name="Conversions"
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                ) : (
-                    <div className="h-96 flex flex-col items-center justify-center gap-4">
-                        <div className="text-slate-400 text-lg">No platform data available</div>
-                        <button 
-                            onClick={fetchPlatformData}
-                            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-                        >
-                            Retry Loading Data
-                        </button>
-                    </div>
-                )}
+                                Retry Loading Data
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Best Platform KPIs */}

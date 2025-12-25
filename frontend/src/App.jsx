@@ -11,41 +11,44 @@ import AIMarketing from './pages/AIMarketing/AIMarketing';
 import Workfront from './pages/Workfront/Workfront';
 import { AuthProvider } from './context/AuthContext';
 import { FilterProvider } from './context/FilterContext';
+import { NotificationProvider } from './context/NotificationContext';
 import { ProtectedRoute, PublicRoute } from './components/AuthRoutes';
 
 function App() {
   return (
     <AuthProvider>
       <FilterProvider>
-        <Router>
-          <Routes>
-            {/* Public Routes */}
-            <Route path="/login" element={
-              <PublicRoute>
-                <Login />
-              </PublicRoute>
-            } />
-            <Route path="/signup" element={
-              <PublicRoute>
-                <Signup />
-              </PublicRoute>
-            } />
+        <NotificationProvider>
+          <Router>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/login" element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } />
+              <Route path="/signup" element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              } />
 
-            {/* Protected Routes */}
-            <Route element={<ProtectedRoute />}>
-              <Route path="/" element={<DashboardLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="campaigns" element={<Campaigns />} />
-                <Route path="analytics" element={<Analytics />} />
-                <Route path="ai-assistant" element={<AIAssistant />} />
-                <Route path="ai-marketing" element={<AIMarketing />} />
-                <Route path="workfront" element={<Workfront />} />
+              {/* Protected Routes */}
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<DashboardLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="campaigns" element={<Campaigns />} />
+                  <Route path="analytics" element={<Analytics />} />
+                  <Route path="ai-assistant" element={<AIAssistant />} />
+                  <Route path="ai-marketing" element={<AIMarketing />} />
+                  <Route path="workfront" element={<Workfront />} />
+                </Route>
               </Route>
-            </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Router>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Router>
+        </NotificationProvider>
       </FilterProvider>
     </AuthProvider>
   );

@@ -115,6 +115,111 @@
                     "Ad 2": "Testing"
                 }
             }
+        },
+        "e395217a-72f8-43a2-8389-05c8805996d8": {
+            "name": "Christmas Holidays Offer",
+            "metrics": {
+                "impressions": 9783,
+                "clicks": 1250,
+                "cost": 944.32,
+                "conversions": 47,
+                "ctr": 3.19,
+                "cpc": 1.57,
+                "cpm": 24.08,
+                "conversion_rate": 9.54,
+                "roi": 2.17,
+                "sentiment_score": 0.5,
+                "forecast_data": {
+                    "projected_roi": 3.3,
+                    "projected_conversions": 134,
+                    "confidence_score": "78%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 10000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Fashionistas",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "e8031e92-43e3-48ef-9bda-b7ad923339b0": {
+            "name": "Offers",
+            "metrics": {
+                "impressions": 13885,
+                "clicks": 1129,
+                "cost": 351.25,
+                "conversions": 99,
+                "ctr": 1.05,
+                "cpc": 1.06,
+                "cpm": 55.37,
+                "conversion_rate": 7.23,
+                "roi": 3.75,
+                "sentiment_score": 0.89,
+                "forecast_data": {
+                    "projected_roi": 3.5,
+                    "projected_conversions": 100,
+                    "confidence_score": "78%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 10000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Professionals",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Winner",
+                    "Ad 2": "Testing"
+                }
+            }
+        },
+        "7e6d570e-8c03-43a0-8f2d-8a84a3cb7900": {
+            "name": "New Camp",
+            "metrics": {
+                "impressions": 8715,
+                "clicks": 409,
+                "cost": 923.94,
+                "conversions": 96,
+                "ctr": 3.42,
+                "cpc": 1.18,
+                "cpm": 29.9,
+                "conversion_rate": 7.55,
+                "roi": 1.72,
+                "sentiment_score": 0.58,
+                "forecast_data": {
+                    "projected_roi": 3.1,
+                    "projected_conversions": 458,
+                    "confidence_score": "79%"
+                },
+                "schedule_data": {
+                    "duration_days": 30,
+                    "next_run": "",
+                    "frequency": "Daily"
+                },
+                "budget": 30000.0,
+                "target_audience": 10000,
+                "audience_insight": {
+                    "primary_segment": "Professionals",
+                    "engagement_depth": "High"
+                },
+                "detailed_stats": {
+                    "Ad 1": "Active",
+                    "Ad 2": "Testing"
+                }
+            }
         }
     }
 }
