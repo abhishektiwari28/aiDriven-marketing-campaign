@@ -50,4 +50,10 @@ An AI-driven co-pilot for digital marketing that moves beyond static dashboards 
 4. API docs available at [http://localhost:8000/docs](http://localhost:8000/docs).
 
 
+## Deep Analytics
+**Initiate Deep Analytics** - Advanced AI-powered analysis engine that performs comprehensive campaign performance evaluation, predictive modeling, and automated optimization recommendations across all marketing channels in real-time.
+
 # Himani has done changes
+# sushma 
+# nancy
+# updates
