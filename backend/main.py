@@ -115,8 +115,40 @@ def get_campaign_metrics(campaign_id: str):
 
 from services.optimization_service import optimization_service
 
+@app.get("/api/platform-data/{platform}")
+def get_platform_data(platform: str):
+    try:
+        import json
+        import os
+        
+        # Map platform names to file names
+        platform_files = {
+            "Facebook": "Facebook.json",
+            "Instagram": "Instagram.json", 
+            "Google Ads": "Google Ads.json",
+            "Email": "Email.json",
+            "Twitter": "Twitter.json",
+            "Social Media": "Social Media.json"
+        }
+        
+        filename = platform_files.get(platform)
+        if not filename:
+            raise HTTPException(status_code=404, detail=f"Platform {platform} not found")
+        
+        file_path = os.path.join("data", filename)
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail=f"Data file for {platform} not found")
+        
+        with open(file_path, 'r') as f:
+            data = json.load(f)
+        
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/api/platforms/{platform}/stats")
 def get_platform_stats(platform: str):
+    """Get aggregated stats for a specific platform from all campaigns"""
     try:
         return PlatformAPI.get_platform_aggregate_stats(platform)
     except Exception as e:
@@ -259,6 +291,28 @@ async def get_dashboard_trends(campaign_id: Optional[str] = None, days: int = 30
 @app.get("/api/dashboard/revenue-trajectory")
 async def get_dashboard_revenue_trajectory(campaign_id: Optional[str] = None, days: int = 30):
     return dashboard_service.get_revenue_trajectory(campaign_id, days)
+
+@app.get("/api/platforms/all/stats")
+def get_all_platforms_stats():
+    """Get aggregated stats for all platforms"""
+    try:
+        platforms = ["Instagram", "Facebook", "Twitter", "Google Ads", "Email"]
+        all_stats = []
+        
+        for platform in platforms:
+            try:
+                stats = PlatformAPI.get_platform_aggregate_stats(platform)
+                print(f"Stats for {platform}: {stats}")
+                all_stats.append(stats)
+            except Exception as e:
+                print(f"Error getting stats for {platform}: {e}")
+                continue
+        
+        print(f"Final all_stats: {all_stats}")
+        return all_stats
+    except Exception as e:
+        print(f"Error in get_all_platforms_stats: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 
