@@ -57,3 +57,4 @@ An AI-driven co-pilot for digital marketing that moves beyond static dashboards 
 # sushma 
 # nancy
 # updates
+# voice
